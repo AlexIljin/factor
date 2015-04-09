@@ -64,8 +64,8 @@ IN: dice7
 ! Verify distribution uniformity/Naive. Input parameters are a word that
 ! produces a random number on stack, the number of times to call it, and a
 ! delta value used to judge the distribution uniformity.
-! Sample call: 10000 7 / 0.002 \ dice7 10000 verify
-:: verify ( ideal delta rnd-func: ( -- random ) times -- )
+! Sample call: 0.002 10000 7 / \ dice7 10000 verify
+:: verify ( delta ideal rnd-func: ( -- random ) times -- )
    rnd-func times roll
    count-dice7-outcomes
    ideal v-n vabs
