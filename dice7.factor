@@ -5,12 +5,12 @@
 USING: kernel random math math.functions math.vectors sequences locals prettyprint ;
 IN: dice7
 
-! Output a random number 1..5.
+! Output a random integer 1..5.
 : dice5 ( -- x )
    random-unit 5 * floor 1 + >integer
 ;
 
-! Output a random number 1..7 using dice5 as randomness source.
+! Output a random integer 1..7 using dice5 as randomness source.
 : dice7 ( -- x )
    0 [ dup 21 < ] [ drop dice5 5 * dice5 + 6 - ] do until
    7 rem 1 + >integer
