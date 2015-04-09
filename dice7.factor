@@ -47,7 +47,7 @@ IN: dice7
    times sides / :> ideal-count
    ideal-count v-n vabs
    times v/n
-   delta [ > ] curry map
+   delta [ < ] curry map
    vall? [ "Random enough" . ] [ "Not random enough" . ] if
 ;
 
