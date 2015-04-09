@@ -44,6 +44,7 @@ IN: dice7
 :: verify ( delta sides rnd-func: ( -- random ) times -- )
    rnd-func times roll
    sides count-diceX-outcomes
+   dup .
    times sides / :> ideal-count
    ideal-count v-n vabs
    times v/n
