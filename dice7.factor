@@ -2,7 +2,7 @@
 ! See http://factorcode.org/license.txt for BSD license.
 ! http://rosettacode.org/wiki/Seven-sided_dice_from_five-sided_dice
 ! http://rosettacode.org/wiki/Simple_Random_Distribution_Checker
-USING: kernel random math math.functions math.vectors sequences locals prettyprint io ;
+USING: kernel random math math.functions math.vectors sequences locals prettyprint ;
 IN: dice7
 
 ! Output a random number 1..5.
@@ -51,7 +51,7 @@ IN: dice7
    ideal v-n vabs
    times v/n
    delta [ > ] curry map
-   vall? [ "Random enough" print ] [ "Not random enough" print ] if
+   vall? [ "Random enough" . ] [ "Not random enough" . ] if
 ;
 
 
@@ -63,5 +63,5 @@ IN: dice7
    rot v-n vabs
    swap v/n
    swap [ > ] curry map
-   vall? [ "Random enough" print ] [ "Not random enough" print ] if
+   vall? [ "Random enough" . ] [ "Not random enough" . ] if
 ;
