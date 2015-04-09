@@ -24,27 +24,6 @@ IN: dice7
    nip
 ;
 
-! Test uniformity of the distribution for an array of 1000000 dice7 rolls.
-
-: assert-empty ( seq -- ) length 0 assert= ;
-
-: roll-dice5 ( times -- array ) iota [ drop dice5 ] map ;
-
-: roll-dice7 ( times -- array ) iota [ drop dice7 ] map ;
-
-:: count-and-remove ( array elt -- array' num-removed )
-   array length :> length-before
-   elt array remove-eq
-   dup length length-before - neg
-;
-
-: count-dice7-outcomes-v1 ( array -- array )
-   dup length swap
-   7 iota [ 1 + count-and-remove ] map
-   swap assert-empty
-   dup sum rot assert=
-;
-
 ! Input array contains outcomes of a number of die throws. Each die result is
 ! an integer in the range 1..X. Calculate and return the number of each
 ! of the results in the array so that in the first position of the result
