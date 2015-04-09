@@ -59,14 +59,3 @@ IN: dice7
    { 1 10 100 1000 10000 100000 1000000 }
    [| times | 0.02 7 \ dice7 times verify ] each
 ;
-
-! Same as verify, but without named locals, just stack shuffling.
-! refresh-all 0.002 100000 7 / \ dice7 100000 verify-u
-: verify-u ( delta ideal rnd-func: ( -- random ) times -- )
-   [ roll ] keep swap
-   7 count-diceX-outcomes
-   rot v-n vabs
-   swap v/n
-   swap [ > ] curry map
-   vall? [ "Random enough" . ] [ "Not random enough" . ] if
-;
