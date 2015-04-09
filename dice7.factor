@@ -38,8 +38,9 @@ IN: dice7
 
 ! Verify distribution uniformity/Naive. Delta is the acceptable deviation
 ! from the ideal number of items in each bucket, expressed as a fraction of
-! the total count. Rnd-func is a word that produces a random number on stack,
-! times is the number of times to call it.
+! the total count. Sides is the number of die sides. Rnd-func is a word that
+! produces a random number on stack in the range [1..sides], times is the
+! number of times to call it.
 ! Sample call: 0.02 7 \ dice7 100000 verify
 :: verify ( delta sides rnd-func: ( -- random ) times -- )
    rnd-func times roll
