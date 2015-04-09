@@ -53,6 +53,12 @@ IN: dice7
 ;
 
 
+! Call verify with 1, 10, 100, ... 1000000 rolls of 7-sided die.
+: verify-all ( -- )
+   { 1 10 100 1000 10000 100000 1000000 }
+   [| times | 0.02 7 \ dice7 times verify ] each
+;
+
 ! Same as verify, but without named locals, just stack shuffling.
 ! refresh-all 0.002 100000 7 / \ dice7 100000 verify-u
 : verify-u ( delta ideal rnd-func: ( -- random ) times -- )
