@@ -36,13 +36,14 @@ IN: dice7
    assert=
 ;
 
-: count-dice7-outcomes ( array -- array )
+: count-dice7-outcomes ( array -- array7 )
    7 count-diceX-outcomes
 ;
 
-! Verify distribution uniformity/Naive. Input parameters are a word that
-! produces a random number on stack, the number of times to call it, and a
-! delta value used to judge the distribution uniformity.
+! Verify distribution uniformity/Naive. Delta is the acceptable deviation
+! from the ideal number of items in each bucket. Rnd-func is a word that
+! produces a random number on stack, the times is the number of times to
+! call rnd-func.
 ! Sample call: 0.002 10000 7 / \ dice7 10000 verify
 :: verify ( delta ideal rnd-func: ( -- random ) times -- )
    rnd-func times roll
