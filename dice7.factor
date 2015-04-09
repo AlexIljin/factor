@@ -77,7 +77,7 @@ IN: dice7
 
 ! Same as verify, but without named locals, just stack shuffling.
 ! refresh-all 0.002 100000 7 / \ dice7 100000 verify-u
-: verify-u ( delta ideal word: ( -- random ) times -- )
+: verify-u ( delta ideal rnd-func: ( -- random ) times -- )
    [ roll ] keep swap
    count-dice7-outcomes
    rot v-n vabs
