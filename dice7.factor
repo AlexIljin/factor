@@ -36,19 +36,16 @@ IN: dice7
    assert=
 ;
 
-: count-dice7-outcomes ( array -- array7 )
-   7 count-diceX-outcomes
-;
-
 ! Verify distribution uniformity/Naive. Delta is the acceptable deviation
-! from the ideal number of items in each bucket. Rnd-func is a word that
-! produces a random number on stack, the times is the number of times to
-! call rnd-func.
-! Sample call: 0.002 10000 7 / \ dice7 10000 verify
-:: verify ( delta ideal rnd-func: ( -- random ) times -- )
+! from the ideal number of items in each bucket, expressed as a fraction of
+! the total count. Rnd-func is a word that produces a random number on stack,
+! times is the number of times to call it.
+! Sample call: 0.02 7 \ dice7 100000 verify
+:: verify ( delta sides rnd-func: ( -- random ) times -- )
    rnd-func times roll
-   count-dice7-outcomes
-   ideal v-n vabs
+   sides count-diceX-outcomes
+   times sides / :> ideal-count
+   ideal-count v-n vabs
    times v/n
    delta [ > ] curry map
    vall? [ "Random enough" . ] [ "Not random enough" . ] if
@@ -59,7 +56,7 @@ IN: dice7
 ! refresh-all 0.002 100000 7 / \ dice7 100000 verify-u
 : verify-u ( delta ideal rnd-func: ( -- random ) times -- )
    [ roll ] keep swap
-   count-dice7-outcomes
+   7 count-diceX-outcomes
    rot v-n vabs
    swap v/n
    swap [ > ] curry map
