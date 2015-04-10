@@ -1,9 +1,10 @@
 ! Copyright (C) 2015 Alexander Ilin.
 ! See http://factorcode.org/license.txt for BSD license.
-! http://rosettacode.org/wiki/Seven-sided_dice_from_five-sided_dice
-! http://rosettacode.org/wiki/Simple_Random_Distribution_Checker
 USING: kernel random math math.functions math.vectors sequences locals prettyprint ;
 IN: rosetta-code.dice7
+
+! http://rosettacode.org/wiki/Seven-sided_dice_from_five-sided_dice
+! http://rosettacode.org/wiki/Simple_Random_Distribution_Checker
 
 ! Output a random integer 1..5.
 : dice5 ( -- x )
