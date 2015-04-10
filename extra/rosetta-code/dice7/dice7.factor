@@ -14,7 +14,7 @@ IN: rosetta-code.dice7
 ! Output a random integer 1..7 using dice5 as randomness source.
 : dice7 ( -- x )
    0 [ dup 21 < ] [ drop dice5 5 * dice5 + 6 - ] do until
-   7 rem 1 + >integer
+   7 rem 1 +
 ;
 
 ! Roll dice using the passed word the given number of times and produce an
