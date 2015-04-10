@@ -50,8 +50,8 @@ IN: rosetta-code.dice7
    times sides / :> ideal-count
    ideal-count v-n vabs
    times v/n
-   delta [ < ] curry map
-   vall? [ "Random enough" . ] [ "Not random enough" . ] if
+   delta [ < ] curry all?
+   [ "Random enough" . ] [ "Not random enough" . ] if
 ;
 
 
