@@ -1,6 +1,6 @@
 ! Copyright (C) 2015 Alexander Ilin.
 ! See http://factorcode.org/license.txt for BSD license.
-USING: kernel random math math.functions math.vectors sequences locals prettyprint ;
+USING: kernel random math math.functions math.vectors math.ranges sequences locals prettyprint ;
 IN: rosetta-code.dice7
 
 ! http://rosettacode.org/wiki/Seven-sided_dice_from_five-sided_dice
@@ -8,7 +8,7 @@ IN: rosetta-code.dice7
 
 ! Output a random integer 1..5.
 : dice5 ( -- x )
-   random-unit 5 * floor 1 + >integer
+   5 [1,b] random
 ;
 
 ! Output a random integer 1..7 using dice5 as randomness source.
