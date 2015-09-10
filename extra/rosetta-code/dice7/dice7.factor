@@ -1,6 +1,6 @@
 ! Copyright (C) 2015 Alexander Ilin.
 ! See http://factorcode.org/license.txt for BSD license.
-USING: kernel random math math.functions math.vectors math.ranges sequences locals prettyprint ;
+USING: kernel random math math.functions math.vectors math.ranges math.statistics sequences sorting assocs locals prettyprint ;
 IN: rosetta-code.dice7
 
 ! http://rosettacode.org/wiki/Seven-sided_dice_from_five-sided_dice
@@ -37,6 +37,10 @@ IN: rosetta-code.dice7
    assert=
 ;
 
+: count-dice-outcomes ( array -- array )
+   histogram sort-keys values
+;
+
 ! Verify distribution uniformity/Naive. Delta is the acceptable deviation
 ! from the ideal number of items in each bucket, expressed as a fraction of
 ! the total count. Sides is the number of die sides. Rnd-func is a word that
@@ -44,19 +48,19 @@ IN: rosetta-code.dice7
 ! number of times to call it.
 ! Sample call: 0.02 7 \ dice7 100000 verify
 :: verify ( delta sides rnd-func: ( -- random ) times -- )
-   rnd-func times roll
-   sides count-diceX-outcomes
+   times rnd-func replicate
+   count-dice-outcomes
    dup .
    times sides / :> ideal-count
    ideal-count v-n vabs
    times v/n
    delta [ < ] curry all?
    [ "Random enough" . ] [ "Not random enough" . ] if
-;
+; inline
 
 
 ! Call verify with 1, 10, 100, ... 1000000 rolls of 7-sided die.
 : verify-all ( -- )
-   { 1 10 100 1000 10000 100000 1000000 }
-   [| times | 0.02 7 \ dice7 times verify ] each
+   { 1 10 100 1000 10000 }
+   [| times | 0.02 7 [ dice7 ] times verify ] each
 ;
