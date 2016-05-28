@@ -306,7 +306,25 @@ static bool stop_on_ctrl_break = false;
 static HANDLE ctrl_break_thread = nullptr;
 
 static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
-  Sleep(20000); // TODO: do useful stuff here
+  bool ctrl_break_handled = false;
+  while (true) {
+    if (factor::stop_on_ctrl_break) {
+      if (GetAsyncKeyState(VK_CANCEL) >= 0) { /* Ctrl-Break is released. */
+        ctrl_break_handled = false;  /* Wait for the next press. */
+      } else if (!ctrl_break_handled) {
+        if (SuspendThread(factor::boot_thread) != -1) {
+          CONTEXT threadContext;
+          threadContext.ContextFlags = CONTEXT_CONTROL;
+          if (GetThreadContext(factor::boot_thread, &threadContext)) {
+            threadContext.EFlags |= 0x100; /* Exception flag. */
+            ctrl_break_handled = (SetThreadContext(factor::boot_thread, &threadContext) != 0);
+          }
+          ResumeThread(factor::boot_thread);
+        }
+      }
+    }
+    Sleep(10);
+  }
   return 0;
 }
 
