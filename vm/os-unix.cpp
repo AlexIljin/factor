@@ -491,6 +491,14 @@ void handle_ctrl_c() {
   sigaction_safe(SIGINT, &fep_sigaction, NULL);
 }
 
+void ignore_ctrl_break() {
+  // TODO
+}
+
+void handle_ctrl_break() {
+  // TODO
+}
+
 void abort() {
   sig_t ret;
   do {
