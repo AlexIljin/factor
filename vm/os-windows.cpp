@@ -314,14 +314,19 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
       if (GetAsyncKeyState(VK_CANCEL) >= 0) { /* Ctrl-Break is released. */
         ctrl_break_handled = false;  /* Wait for the next press. */
       } else if (!ctrl_break_handled) {
-        if (SuspendThread(factor::boot_thread) != -1) {
+        /* This proc runs in its own thread without stopping the main
+           thread. Since in practice nobody uses the multi-VM stuff yet,
+           we just interrupt the first VM we can get. */
+        FACTOR_ASSERT(thread_vms.size() > 0);
+        THREADHANDLE thd = thread_vms.begin()->first;
+        if (SuspendThread(thd) != -1) {
           CONTEXT threadContext;
           threadContext.ContextFlags = CONTEXT_CONTROL;
-          if (GetThreadContext(factor::boot_thread, &threadContext)) {
+          if (GetThreadContext(thd, &threadContext)) {
             threadContext.EFlags |= 0x100; /* Exception flag. */
-            ctrl_break_handled = (SetThreadContext(factor::boot_thread, &threadContext) != 0);
+            ctrl_break_handled = (SetThreadContext(thd, &threadContext) != 0);
           }
-          ResumeThread(factor::boot_thread);
+          ResumeThread(thd);
         }
       }
     }
