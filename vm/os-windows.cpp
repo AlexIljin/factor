@@ -294,8 +294,6 @@ static BOOL WINAPI ctrl_handler(DWORD dwCtrlType) {
   }
 }
 
-void open_console() { handle_ctrl_c(); }
-
 void ignore_ctrl_c() {
   SetConsoleCtrlHandler(factor::ctrl_handler, FALSE);
 }
@@ -303,6 +301,28 @@ void ignore_ctrl_c() {
 void handle_ctrl_c() {
   SetConsoleCtrlHandler(factor::ctrl_handler, TRUE);
 }
+
+bool stop_on_ctrl_break = false;
+HANDLE ctrl_break_thread = nullptr;
+
+static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
+  Sleep(20000); // TODO: do useful stuff here
+  return 0;
+}
+
+void ignore_ctrl_break() {
+  stop_on_ctrl_break = false;
+}
+
+void handle_ctrl_break() {
+  stop_on_ctrl_break = true;
+  if (ctrl_break_thread == nullptr) {
+    ctrl_break_thread = CreateThread(nullptr, 0, factor::ctrl_break_thread_proc,
+                                     nullptr, 0, nullptr);
+  }
+}
+
+void open_console() { handle_ctrl_c(); handle_ctrl_break();  } // TODO: move handle_ctrl_break elsewhere so that it runs in GUI too
 
 void lock_console() {}
 
