@@ -319,7 +319,9 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
            we just interrupt the first VM we can get. */
         FACTOR_ASSERT(thread_vms.size() > 0);
         THREADHANDLE thd = thread_vms.begin()->first;
-        if (SuspendThread(thd) != -1) {
+        factor_vm* vm = thread_vms.begin()->second;
+        /* Don't interrupt the GC: it'll crash. */
+        if (!atomic::load(&vm->current_gc_p) && (SuspendThread(thd) != -1)) {
           CONTEXT threadContext;
           threadContext.ContextFlags = CONTEXT_CONTROL;
           if (GetThreadContext(thd, &threadContext)) {
