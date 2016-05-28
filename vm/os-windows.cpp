@@ -294,6 +294,8 @@ static BOOL WINAPI ctrl_handler(DWORD dwCtrlType) {
   }
 }
 
+void open_console() { handle_ctrl_c(); }
+
 void ignore_ctrl_c() {
   SetConsoleCtrlHandler(factor::ctrl_handler, FALSE);
 }
@@ -339,8 +341,6 @@ void handle_ctrl_break() {
                                      nullptr, 0, nullptr);
   }
 }
-
-void open_console() { handle_ctrl_c(); handle_ctrl_break();  } // TODO: move handle_ctrl_break elsewhere so that it runs in GUI too
 
 void lock_console() {}
 
