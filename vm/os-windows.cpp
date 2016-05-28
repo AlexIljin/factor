@@ -302,8 +302,8 @@ void handle_ctrl_c() {
   SetConsoleCtrlHandler(factor::ctrl_handler, TRUE);
 }
 
-bool stop_on_ctrl_break = false;
-HANDLE ctrl_break_thread = nullptr;
+static bool stop_on_ctrl_break = false;
+static HANDLE ctrl_break_thread = nullptr;
 
 static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
   Sleep(20000); // TODO: do useful stuff here
