@@ -344,6 +344,7 @@ void ignore_ctrl_break() {
 void handle_ctrl_break() {
   stop_on_ctrl_break = true;
   if (ctrl_break_thread == nullptr) {
+    DisableProcessWindowsGhosting();
     ctrl_break_thread = CreateThread(nullptr, 0, factor::ctrl_break_thread_proc,
                                      nullptr, 0, nullptr);
   }
