@@ -282,7 +282,7 @@ static BOOL WINAPI ctrl_handler(DWORD dwCtrlType) {
          actually support native threads. */
       FACTOR_ASSERT(thread_vms.size() == 1);
       factor_vm* vm = thread_vms.begin()->second;
-      vm->safepoint.enqueue_fep(vm);
+      vm->safepoint.enqueue_fep(vm, false);
 
       /* Before leaving the ctrl_handler, try and wake up the main
          thread. */
@@ -320,15 +320,10 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
         FACTOR_ASSERT(thread_vms.size() > 0);
         THREADHANDLE thd = thread_vms.begin()->first;
         factor_vm* vm = thread_vms.begin()->second;
-        /* Don't interrupt the GC: it'll crash. */
-        if (!atomic::load(&vm->current_gc_p) && (SuspendThread(thd) != -1)) {
-          CONTEXT threadContext;
-          threadContext.ContextFlags = CONTEXT_CONTROL;
-          if (GetThreadContext(thd, &threadContext)) {
-            threadContext.EFlags |= 0x100; /* Exception flag. */
-            ctrl_break_handled = (SetThreadContext(thd, &threadContext) != 0);
-          }
-          ResumeThread(thd);
+        if (!atomic::load(&vm->safepoint.fep_p)) {
+          vm->safepoint.enqueue_fep(vm, true);
+          wake_up_thread(thd); /* Try to wake up the thread. */
+          ctrl_break_handled = true;
         }
       }
     }

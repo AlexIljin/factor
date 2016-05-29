@@ -424,6 +424,7 @@ void factor_vm::factorbug_usage(bool advanced_p) {
 static void exit_fep(factor_vm* vm) {
   unlock_console();
   handle_ctrl_c();
+  handle_ctrl_break();
   vm->fep_p = false;
 }
 
@@ -445,6 +446,7 @@ void factor_vm::factorbug() {
   // the thread will take a break and give us exclusive access to stdin.
   lock_console();
   ignore_ctrl_c();
+  ignore_ctrl_break();
 
   if (!fep_help_was_shown) {
     factorbug_usage(false);
