@@ -320,7 +320,13 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
         FACTOR_ASSERT(thread_vms.size() > 0);
         THREADHANDLE thd = thread_vms.begin()->first;
         factor_vm* vm = thread_vms.begin()->second;
-        if (!atomic::load(&vm->safepoint.fep_p)) {
+        /* Check if the VM thread has the same Id as the thread Id of the
+           currently active window. Note that thread Id is not a handle. */
+        DWORD fgThreadId = GetWindowThreadProcessId(GetForegroundWindow(),
+                                                    nullptr);
+        if (!atomic::load(&vm->safepoint.fep_p)
+            && (fgThreadId == vm->thread_id)
+        ) {
           vm->safepoint.enqueue_fep(vm, true);
           wake_up_thread(thd); /* Try to wake up the thread. */
           ctrl_break_handled = true;

@@ -711,6 +711,9 @@ struct factor_vm {
 
 // os-windows
 #if defined(WINDOWS)
+  /* Id of the main thread we run in. Used for Ctrl-Break handling. */
+  DWORD thread_id;
+
   HANDLE sampler_thread;
   void sampler_thread_loop();
 
