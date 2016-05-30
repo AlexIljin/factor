@@ -351,6 +351,14 @@ void handle_ctrl_break() {
   }
 }
 
+void factor_vm::primitive_enable_ctrl_break() {
+  handle_ctrl_break();
+}
+
+void factor_vm::primitive_disable_ctrl_break() {
+  ignore_ctrl_break();
+}
+
 void lock_console() {}
 
 void unlock_console() {}

@@ -402,6 +402,8 @@ struct factor_vm {
   void factorbug_usage(bool advanced_p);
   void factorbug();
   void primitive_die();
+  void primitive_enable_ctrl_break();
+  void primitive_disable_ctrl_break();
 
   // arrays
   inline void set_array_nth(array* array, cell slot, cell value);
