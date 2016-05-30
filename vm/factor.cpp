@@ -107,8 +107,6 @@ void factor_vm::init_factor(vm_parameters* p) {
 
   if (p->console)
     open_console();
-
-  handle_ctrl_break();
 }
 
 /* Allocates memory */
