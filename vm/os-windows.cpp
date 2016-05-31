@@ -305,7 +305,7 @@ void handle_ctrl_c() {
 }
 
 static volatile bool stop_on_ctrl_break = false;
-static HANDLE ctrl_break_thread = nullptr;
+static HANDLE ctrl_break_thread = NULL;
 
 static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
   bool ctrl_break_handled = false;
@@ -323,7 +323,7 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
         /* Check if the VM thread has the same Id as the thread Id of the
            currently active window. Note that thread Id is not a handle. */
         DWORD fgThreadId = GetWindowThreadProcessId(GetForegroundWindow(),
-                                                    nullptr);
+                                                    NULL);
         if (!atomic::load(&vm->safepoint.fep_p)
             && (fgThreadId == vm->thread_id)
         ) {
@@ -344,10 +344,10 @@ void ignore_ctrl_break() {
 
 void handle_ctrl_break() {
   stop_on_ctrl_break = true;
-  if (ctrl_break_thread == nullptr) {
+  if (ctrl_break_thread == NULL) {
     DisableProcessWindowsGhosting();
-    ctrl_break_thread = CreateThread(nullptr, 0, factor::ctrl_break_thread_proc,
-                                     nullptr, 0, nullptr);
+    ctrl_break_thread = CreateThread(NULL, 0, factor::ctrl_break_thread_proc,
+                                     NULL, 0, NULL);
   }
 }
 
