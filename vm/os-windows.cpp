@@ -338,25 +338,17 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
   return 0;
 }
 
-void ignore_ctrl_break() {
+void factor_vm::primitive_disable_ctrl_break() {
   stop_on_ctrl_break = false;
 }
 
-void handle_ctrl_break() {
+void factor_vm::primitive_enable_ctrl_break() {
   stop_on_ctrl_break = true;
   if (ctrl_break_thread == NULL) {
     DisableProcessWindowsGhosting();
     ctrl_break_thread = CreateThread(NULL, 0, factor::ctrl_break_thread_proc,
                                      NULL, 0, NULL);
   }
-}
-
-void factor_vm::primitive_enable_ctrl_break() {
-  handle_ctrl_break();
-}
-
-void factor_vm::primitive_disable_ctrl_break() {
-  ignore_ctrl_break();
 }
 
 void lock_console() {}

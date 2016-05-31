@@ -20,9 +20,6 @@ bool move_file(const vm_char* path1, const vm_char* path2);
 void ignore_ctrl_c();
 void handle_ctrl_c();
 
-void ignore_ctrl_break();
-void handle_ctrl_break();
-
 bool set_memory_locked(cell base, cell size, bool locked);
 
 }
