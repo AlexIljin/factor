@@ -125,7 +125,7 @@ t error-summary? set-global
 
     [
         read-quot [
-            [ '[ datastack _ with-datastack ] with-ctrl-break ] curry
+            '[ [ datastack _ with-datastack ] with-ctrl-break ]
             [ call-error-hook datastack ]
             recover
         ] [ return ] if*
