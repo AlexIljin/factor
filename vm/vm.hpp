@@ -127,6 +127,9 @@ struct factor_vm {
   bool fep_disabled;
   bool full_output;
 
+  /* Used for Ctrl-Break handling: interrupt VM, but without debugging. */
+  volatile cell skip_debugger_p;
+
   /* Method dispatch statistics */
   dispatch_statistics dispatch_stats;
 
