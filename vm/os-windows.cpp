@@ -322,10 +322,10 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
         factor_vm* vm = thread_vms.begin()->second;
         /* Check if the VM thread has the same Id as the thread Id of the
            currently active window. Note that thread Id is not a handle. */
-        DWORD fgThreadId = GetWindowThreadProcessId(GetForegroundWindow(),
-                                                    NULL);
+        DWORD fg_thd_id = GetWindowThreadProcessId(GetForegroundWindow(),
+                                                   NULL);
         if (!atomic::load(&vm->safepoint.fep_p)
-            && (fgThreadId == vm->thread_id)
+            && (fg_thd_id == vm->thread_id)
         ) {
           atomic::store(&vm->skip_debugger_p, true);
           vm->safepoint.enqueue_fep(vm);
