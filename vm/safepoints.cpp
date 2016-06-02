@@ -36,6 +36,7 @@ void safepoint_state::handle_safepoint(factor_vm* parent, cell pc) volatile {
   parent->faulting_p = false;
 
   if (atomic::load(&fep_p)) {
+    atomic::store(&fep_p, false);
     if (atomic::load(&parent->sampling_profiler_p))
       parent->end_sampling_profiler();
     std::cout << "Interrupted\n";
@@ -43,13 +44,11 @@ void safepoint_state::handle_safepoint(factor_vm* parent, cell pc) volatile {
       // Ctrl-Break throws an exception, interrupting the main thread, same
       // as the "t" command in the factorbug debugger. But for Ctrl-Break to
       // work we don't require the debugger to be activated, or even enabled.
-      atomic::store(&fep_p, false);
       atomic::store(&parent->skip_debugger_p, false);
       parent->general_error(ERROR_INTERRUPT, false_object, false_object);
       FACTOR_ASSERT(false);
     }
     parent->factorbug();
-    atomic::store(&fep_p, false);
   } else if (atomic::load(&parent->sampling_profiler_p)) {
     FACTOR_ASSERT(parent->code->seg->in_segment_p(pc));
     code_block* block = parent->code->code_block_for_address(pc);
