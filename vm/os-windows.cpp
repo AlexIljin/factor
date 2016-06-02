@@ -306,6 +306,7 @@ void handle_ctrl_c() {
 
 static volatile bool stop_on_ctrl_break = false;
 static HANDLE ctrl_break_thread = NULL;
+const int ctrl_break_sleep = 30; /* msec */
 
 static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
   bool ctrl_break_handled = false;
@@ -332,7 +333,7 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
         }
       }
     }
-    Sleep(30);
+    Sleep(ctrl_break_sleep);
   }
   return 0;
 }
