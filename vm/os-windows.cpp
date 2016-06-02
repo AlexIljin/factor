@@ -324,9 +324,7 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
            currently active window. Note that thread Id is not a handle. */
         DWORD fg_thd_id = GetWindowThreadProcessId(GetForegroundWindow(),
                                                    NULL);
-        if (!atomic::load(&vm->safepoint.fep_p)
-            && (fg_thd_id == vm->thread_id)
-        ) {
+        if ((fg_thd_id == vm->thread_id) && !vm->fep_p) {
           atomic::store(&vm->skip_debugger_p, true);
           vm->safepoint.enqueue_fep(vm);
           wake_up_thread(thd); /* Try to wake up the thread. */
