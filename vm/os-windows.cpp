@@ -304,7 +304,7 @@ void handle_ctrl_c() {
   SetConsoleCtrlHandler(factor::ctrl_handler, TRUE);
 }
 
-const int ctrl_break_sleep = 30; /* msec */
+const int ctrl_break_sleep = 10; /* msec */
 
 static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
   bool ctrl_break_handled = false;
