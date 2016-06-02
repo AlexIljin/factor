@@ -334,7 +334,7 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
         }
       }
     }
-    Sleep(10);
+    Sleep(30);
   }
   return 0;
 }
