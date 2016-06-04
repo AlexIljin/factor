@@ -345,6 +345,7 @@ void factor_vm::primitive_enable_ctrl_break() {
     DisableProcessWindowsGhosting();
     ctrl_break_thread = CreateThread(NULL, 0, factor::ctrl_break_thread_proc,
                                      static_cast<LPVOID>(this), 0, NULL);
+    SetThreadPriority(ctrl_break_thread, THREAD_PRIORITY_ABOVE_NORMAL);
   }
 }
 
