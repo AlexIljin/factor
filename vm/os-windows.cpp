@@ -308,25 +308,19 @@ static volatile bool stop_on_ctrl_break = false;
 static HANDLE ctrl_break_thread = NULL;
 const int ctrl_break_sleep = 30; /* msec */
 
-static DWORD WINAPI ctrl_break_thread_proc(LPVOID mainThread) {
+static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
   bool ctrl_break_handled = false;
+  factor_vm* vm = static_cast<factor_vm*>(parent_vm);
   while (factor::stop_on_ctrl_break) {
     if (GetAsyncKeyState(VK_CANCEL) >= 0) { /* Ctrl-Break is released. */
       ctrl_break_handled = false;  /* Wait for the next press. */
     } else if (!ctrl_break_handled) {
-      /* This proc runs in its own thread without stopping the main
-         thread. Since in practice nobody uses the multi-VM stuff yet,
-         we just interrupt the first VM we can get. */
-      FACTOR_ASSERT(thread_vms.size() > 0);
-      THREADHANDLE thd = thread_vms.begin()->first;
-      factor_vm* vm = thread_vms.begin()->second;
       /* Check if the VM thread has the same Id as the thread Id of the
          currently active window. Note that thread Id is not a handle. */
       DWORD fg_thd_id = GetWindowThreadProcessId(GetForegroundWindow(), NULL);
       if ((fg_thd_id == vm->thread_id) && !vm->fep_p) {
         atomic::store(&vm->skip_debugger_p, true);
         vm->safepoint.enqueue_fep(vm);
-        wake_up_thread(thd); /* Try to wake up the thread. */
         ctrl_break_handled = true;
       }
     }
@@ -352,7 +346,7 @@ void factor_vm::primitive_enable_ctrl_break() {
   if (ctrl_break_thread == NULL) {
     DisableProcessWindowsGhosting();
     ctrl_break_thread = CreateThread(NULL, 0, factor::ctrl_break_thread_proc,
-                                     NULL, 0, NULL);
+                                     static_cast<LPVOID>(this), 0, NULL);
   }
 }
 
