@@ -719,6 +719,9 @@ struct factor_vm {
   /* Id of the main thread we run in. Used for Ctrl-Break handling. */
   DWORD thread_id;
 
+  HANDLE ctrl_break_thread;
+  volatile bool stop_on_ctrl_break;
+
   HANDLE sampler_thread;
   void sampler_thread_loop();
 

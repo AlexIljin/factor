@@ -304,14 +304,12 @@ void handle_ctrl_c() {
   SetConsoleCtrlHandler(factor::ctrl_handler, TRUE);
 }
 
-static volatile bool stop_on_ctrl_break = false;
-static HANDLE ctrl_break_thread = NULL;
 const int ctrl_break_sleep = 30; /* msec */
 
 static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
   bool ctrl_break_handled = false;
   factor_vm* vm = static_cast<factor_vm*>(parent_vm);
-  while (factor::stop_on_ctrl_break) {
+  while (vm->stop_on_ctrl_break) {
     if (GetAsyncKeyState(VK_CANCEL) >= 0) { /* Ctrl-Break is released. */
       ctrl_break_handled = false;  /* Wait for the next press. */
     } else if (!ctrl_break_handled) {
