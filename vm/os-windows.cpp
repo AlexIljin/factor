@@ -304,48 +304,156 @@ void handle_ctrl_c() {
   SetConsoleCtrlHandler(factor::ctrl_handler, TRUE);
 }
 
-const int ctrl_break_sleep = 30; /* msec */
+typedef enum _CTRL_BREAK_THREAD_RESULT {
+  CBT_OK, CBT_CREATE_WINDOW_FAIL, CBT_RAW_INPUT_REG_FAIL, CBT_MALLOC_FAIL,
+  CBT_GET_RAW_INPUT_FAIL, CBT_RAW_INPUT_UNREG_FAIL, CBT_UNKNOWN_ERROR,
+  CBT_TERMINATION_FAIL
+} CTRL_BREAK_THREAD_RESULT;
 
 static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
-  bool ctrl_break_handled = false;
   factor_vm* vm = static_cast<factor_vm*>(parent_vm);
-  while (vm->stop_on_ctrl_break) {
-    if (GetAsyncKeyState(VK_CANCEL) >= 0) { /* Ctrl-Break is released. */
-      ctrl_break_handled = false;  /* Wait for the next press. */
-    } else if (!ctrl_break_handled) {
-      /* Check if the VM thread has the same Id as the thread Id of the
-         currently active window. Note that thread Id is not a handle. */
-      DWORD fg_thd_id = GetWindowThreadProcessId(GetForegroundWindow(), NULL);
-      if ((fg_thd_id == vm->thread_id) && !vm->fep_p) {
-        atomic::store(&vm->skip_debugger_p, true);
-        vm->safepoint.enqueue_fep(vm);
-        ctrl_break_handled = true;
+  HANDLE quit_event = vm->quit_ctrl_break_event; // Must close this handle.
+  SetEvent(vm->quit_event_handle_copied);
+
+  /* This thread will process the message queue, so we don't need a window,
+     but it is required for RegisterRawInputDevices to succeed. Any window
+     will do, so we just use one of the simpler standard window classes. */
+  HWND dummy = CreateWindow(TEXT("STATIC"), NULL, 0, 0, 0, 0, 0, HWND_MESSAGE,
+                            NULL, NULL, NULL);
+  if (dummy == NULL) {
+    CloseHandle(quit_event);
+    return CBT_CREATE_WINDOW_FAIL;
+  }
+
+  // Add HID keyboard and also ignore legacy keyboard messages.
+  RAWINPUTDEVICE Rid[1];
+  Rid[0].usUsagePage = 1; // generic desktop controls
+  Rid[0].usUsage = 6; // keyboard
+  Rid[0].dwFlags = RIDEV_NOLEGACY | RIDEV_INPUTSINK;
+  Rid[0].hwndTarget = dummy; // A hwnd is required for RIDEV_INPUTSINK.
+  if (RegisterRawInputDevices(Rid, 1, sizeof(Rid[0])) == FALSE) {
+    // Registration failed. Call GetLastError to find out more.
+    CloseHandle(quit_event);
+    DestroyWindow(dummy);
+    return CBT_RAW_INPUT_REG_FAIL;
+  }
+
+  LPBYTE lpb = NULL;
+  UINT lpb_size = 0; // Currently allocated lpb size.
+  MSG msg;
+  msg.message = WM_NULL;
+  while (msg.message != WM_QUIT) { // Use PostQuitMessage to exit the loop.
+    if (MsgWaitForMultipleObjects(1, &quit_event, FALSE, INFINITE, QS_RAWINPUT)
+        == WAIT_OBJECT_0)
+    {
+      // quit_event is signaled, post WM_QUIT to terminate the loop.
+      PostQuitMessage(CBT_OK);
+    }
+    // A WM_INPUT or a WM_QUIT message is pending. Thread message queue must
+    // be emptied before the next MsgWaitForMultipleObjects call.
+    while (PeekMessage(&msg, NULL, WM_INPUT, WM_INPUT, PM_REMOVE)
+           && (msg.message != WM_QUIT))
+    {
+      if (msg.message == WM_INPUT) {
+        // Process the raw input message.
+        UINT need_size = 0; // Size needed for the lpb data buffer.
+        GetRawInputData((HRAWINPUT)msg.lParam, RID_INPUT, NULL, &need_size,
+                        sizeof(RAWINPUTHEADER));
+        if (need_size > lpb_size) {
+          // Grow lpb_size until it's >= need_size.
+          delete[] lpb;
+          lpb = NULL;
+          if (need_size < 0x100000) { // need_size sanity check.
+            if (lpb_size == 0)
+              lpb_size = 1;
+            // Doubling the size reduces the overall number of reallocations.
+            while (need_size > lpb_size)
+              lpb_size *= 2;
+            lpb = new(nothrow) BYTE[lpb_size];
+          }
+        }
+
+        if (lpb == NULL) {
+          // Memory allocation or need_size sanity check failed.
+          lpb_size = 0;
+          PostQuitMessage(CBT_MALLOC_FAIL);
+        } else if (GetRawInputData((HRAWINPUT)msg.lParam, RID_INPUT, lpb,
+                                   &lpb_size, sizeof(RAWINPUTHEADER))
+                   != lpb_size)
+        {
+          PostQuitMessage(CBT_GET_RAW_INPUT_FAIL);
+        } else {
+          // Process raw input data in the lpb buffer.
+          RAWINPUT* raw = (RAWINPUT*)lpb;
+          if ((raw->header.dwType == RIM_TYPEKEYBOARD)
+              && (raw->data.keyboard.VKey == VK_CANCEL)//VK_TAB)//VK_CANCEL)
+              && (raw->data.keyboard.Message == WM_KEYDOWN))
+          {
+            // Check if the VM thread has the same Id as the thread Id of the
+            // currently active window. (This check will fail if window
+            // ghosting is enabled.) Note: thread Id is not a handle.
+            DWORD fg_thd_id = GetWindowThreadProcessId(GetForegroundWindow(),
+                                                       NULL);
+            if ((fg_thd_id == vm->thread_id) && !vm->fep_p) {
+              atomic::store(&vm->skip_debugger_p, true);
+              vm->safepoint.enqueue_fep(vm);
+            }
+          }
+        }
       }
     }
-    Sleep(ctrl_break_sleep);
   }
-  return 0;
+
+  // Cleanup.
+  DWORD result = CBT_UNKNOWN_ERROR;
+  CloseHandle(quit_event);
+  DestroyWindow(dummy);
+  delete[] lpb;
+  Rid[0].dwFlags = RIDEV_REMOVE;
+  Rid[0].hwndTarget = NULL; // NULL is required for RIDEV_REMOVE.
+  if (RegisterRawInputDevices(Rid, 1, sizeof(Rid[0])) == FALSE) {
+    // Unregistration failed. Call GetLastError to find out more.
+    // Warning: this unregistration has application-level effect. If another
+    // thread is currently registered for raw input, it will no longer get the
+    // WM_INPUT messages and may be stuck waiting.
+    result = CBT_RAW_INPUT_UNREG_FAIL;
+  } else if (msg.message == WM_QUIT)
+    result = msg.wParam;
+  return result;
 }
 
 void factor_vm::primitive_disable_ctrl_break() {
-  stop_on_ctrl_break = false;
   if (ctrl_break_thread != NULL) {
-    DWORD wait_result = WaitForSingleObject(ctrl_break_thread,
-                                            2 * ctrl_break_sleep);
+    SetEvent(quit_ctrl_break_event);
+    quit_ctrl_break_event = NULL; // The handle is closed by the thread.
+    // It's important to wait for the thread termination. If a newer thread is
+    // started and registered for the raw input before this one is
+    // unregistered, then when this one is unregistered, the newer thread will
+    // no longer receive raw input and will be stuck waiting for it forever.
+    DWORD wait_result = WaitForSingleObject(ctrl_break_thread, 100);
     if (wait_result != WAIT_OBJECT_0)
-      TerminateThread(ctrl_break_thread, 0);
+      TerminateThread(ctrl_break_thread, CBT_TERMINATION_FAIL);
     CloseHandle(ctrl_break_thread);
     ctrl_break_thread = NULL;
   }
 }
 
 void factor_vm::primitive_enable_ctrl_break() {
-  stop_on_ctrl_break = true;
   if (ctrl_break_thread == NULL) {
     DisableProcessWindowsGhosting();
+    // The quit event handle will be closed by the thread on exit.
+    quit_ctrl_break_event = CreateEvent(NULL, TRUE, FALSE, NULL);
+    quit_event_handle_copied = CreateEvent(NULL, FALSE, FALSE, NULL);
     ctrl_break_thread = CreateThread(NULL, 0, factor::ctrl_break_thread_proc,
                                      static_cast<LPVOID>(this), 0, NULL);
     SetThreadPriority(ctrl_break_thread, THREAD_PRIORITY_ABOVE_NORMAL);
+    // Make sure the thread acquired the quit event handle. Otherwise an
+    // immediate call to primitive_disable_ctrl_break can NULL the handle,
+    // thereby leaking the event object and leaving the thread with no quit
+    // signal.
+    WaitForSingleObject(quit_event_handle_copied, INFINITE);
+    CloseHandle(quit_event_handle_copied);
+    quit_event_handle_copied = NULL;
   }
 }
 
