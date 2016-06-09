@@ -390,10 +390,8 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
             // ghosting is enabled.) Note: thread Id is not a handle.
             DWORD fg_thd_id = GetWindowThreadProcessId(GetForegroundWindow(),
                                                        NULL);
-            if ((fg_thd_id == vm->thread_id) && !vm->fep_p) {
-              atomic::store(&vm->skip_debugger_p, true);
+            if ((fg_thd_id == vm->thread_id) && !vm->fep_p)
               vm->safepoint.enqueue_fep(vm);
-            }
           }
         }
       }
