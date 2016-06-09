@@ -313,7 +313,6 @@ typedef enum _CTRL_BREAK_THREAD_RESULT {
 static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
   factor_vm* vm = static_cast<factor_vm*>(parent_vm);
   HANDLE quit_event = vm->quit_ctrl_break_event;
-  SetEvent(vm->quit_event_handle_copied);
 
   /* This thread will process the message queue, so we don't need a window,
      but it is required for RegisterRawInputDevices to succeed. Any window
@@ -440,17 +439,9 @@ void factor_vm::primitive_enable_ctrl_break() {
     DisableProcessWindowsGhosting();
     // The quit event handle will be closed by the thread on exit.
     quit_ctrl_break_event = CreateEvent(NULL, TRUE, FALSE, NULL);
-    quit_event_handle_copied = CreateEvent(NULL, FALSE, FALSE, NULL);
     ctrl_break_thread = CreateThread(NULL, 0, factor::ctrl_break_thread_proc,
                                      static_cast<LPVOID>(this), 0, NULL);
     SetThreadPriority(ctrl_break_thread, THREAD_PRIORITY_ABOVE_NORMAL);
-    // Make sure the thread acquired the quit event handle. Otherwise an
-    // immediate call to primitive_disable_ctrl_break can NULL the handle,
-    // thereby leaking the event object and leaving the thread with no quit
-    // signal.
-    WaitForSingleObject(quit_event_handle_copied, INFINITE);
-    CloseHandle(quit_event_handle_copied);
-    quit_event_handle_copied = NULL;
   }
 }
 

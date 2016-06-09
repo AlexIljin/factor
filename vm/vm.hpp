@@ -721,7 +721,6 @@ struct factor_vm {
 
   HANDLE ctrl_break_thread;
   volatile HANDLE quit_ctrl_break_event; // Signal to stop ctrl_break_thread.
-  volatile HANDLE quit_event_handle_copied;
 
   HANDLE sampler_thread;
   void sampler_thread_loop();

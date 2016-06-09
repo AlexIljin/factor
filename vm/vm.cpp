@@ -11,7 +11,6 @@ factor_vm::factor_vm(THREADHANDLE thread)
       thread_id(GetCurrentThreadId()),
       ctrl_break_thread(NULL),
       quit_ctrl_break_event(NULL),
-      quit_event_handle_copied(NULL),
 #endif
       callback_id(0),
       c_to_factor_func(NULL),
