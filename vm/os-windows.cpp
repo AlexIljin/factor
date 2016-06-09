@@ -312,7 +312,7 @@ typedef enum _CTRL_BREAK_THREAD_RESULT {
 
 static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
   factor_vm* vm = static_cast<factor_vm*>(parent_vm);
-  HANDLE quit_event = vm->quit_ctrl_break_event; // Must close this handle.
+  HANDLE quit_event = vm->quit_ctrl_break_event;
   SetEvent(vm->quit_event_handle_copied);
 
   /* This thread will process the message queue, so we don't need a window,
@@ -320,10 +320,8 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
      will do, so we just use one of the simpler standard window classes. */
   HWND dummy = CreateWindow(TEXT("STATIC"), NULL, 0, 0, 0, 0, 0, HWND_MESSAGE,
                             NULL, NULL, NULL);
-  if (dummy == NULL) {
-    CloseHandle(quit_event);
+  if (dummy == NULL)
     return CBT_CREATE_WINDOW_FAIL;
-  }
 
   // Add HID keyboard and also ignore legacy keyboard messages.
   RAWINPUTDEVICE Rid[1];
@@ -333,7 +331,6 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
   Rid[0].hwndTarget = dummy; // A hwnd is required for RIDEV_INPUTSINK.
   if (RegisterRawInputDevices(Rid, 1, sizeof(Rid[0])) == FALSE) {
     // Registration failed. Call GetLastError to find out more.
-    CloseHandle(quit_event);
     DestroyWindow(dummy);
     return CBT_RAW_INPUT_REG_FAIL;
   }
@@ -406,7 +403,6 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
 
   // Cleanup.
   DWORD result = CBT_UNKNOWN_ERROR;
-  CloseHandle(quit_event);
   DestroyWindow(dummy);
   delete[] lpb;
   Rid[0].dwFlags = RIDEV_REMOVE;
@@ -425,7 +421,6 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
 void factor_vm::primitive_disable_ctrl_break() {
   if (ctrl_break_thread != NULL) {
     SetEvent(quit_ctrl_break_event);
-    quit_ctrl_break_event = NULL; // The handle is closed by the thread.
     // It's important to wait for the thread termination. If a newer thread is
     // started and registered for the raw input before this one is
     // unregistered, then when this one is unregistered, the newer thread will
@@ -435,6 +430,8 @@ void factor_vm::primitive_disable_ctrl_break() {
       TerminateThread(ctrl_break_thread, CBT_TERMINATION_FAIL);
     CloseHandle(ctrl_break_thread);
     ctrl_break_thread = NULL;
+    CloseHandle(quit_ctrl_break_event);
+    quit_ctrl_break_event = NULL;
   }
 }
 
