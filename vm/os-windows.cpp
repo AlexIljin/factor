@@ -375,7 +375,7 @@ static DWORD WINAPI ctrl_break_thread_proc(LPVOID parent_vm) {
           PostQuitMessage(CBT_MALLOC_FAIL);
         } else if (GetRawInputData((HRAWINPUT)msg.lParam, RID_INPUT, lpb,
                                    &lpb_size, sizeof(RAWINPUTHEADER))
-                   != lpb_size)
+                   != need_size)
         {
           PostQuitMessage(CBT_GET_RAW_INPUT_FAIL);
         } else {
