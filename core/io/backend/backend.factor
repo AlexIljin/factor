@@ -5,6 +5,7 @@ namespaces system ;
 IN: io.backend
 
 SYMBOL: io-backend
+SYMBOL: dmc-backend
 
 SINGLETON: c-io-backend
 
@@ -26,6 +27,8 @@ HOOK: normalize-path io-backend ( path -- path' )
 : set-io-backend ( io-backend -- )
     io-backend set-global init-io init-stdio
     "io.files" startup-hooks get at call( -- ) ;
+
+: set-dmc-backend ( dmc-backend -- ) dmc-backend set-global ;
 
 [ init-io embedded? [ init-stdio ] unless ]
 "io.backend" add-startup-hook

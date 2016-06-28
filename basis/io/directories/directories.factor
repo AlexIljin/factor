@@ -75,9 +75,9 @@ HOOK: (directory-entries) os ( path -- seq )
 HOOK: touch-file io-backend ( path -- )
 
 ! Deleting files
-HOOK: delete-file io-backend ( path -- )
+HOOK: delete-file dmc-backend ( path -- )
 
-HOOK: delete-directory io-backend ( path -- )
+HOOK: delete-directory dmc-backend ( path -- )
 
 : ?delete-file ( path -- )
     '[ _ delete-file ] ignore-errors ;
@@ -86,8 +86,8 @@ HOOK: delete-directory io-backend ( path -- )
     over file-name append-path ;
 
 ! Moving and renaming files
-HOOK: move-file io-backend ( from to -- )
-HOOK: move-file-atomically io-backend ( from to -- )
+HOOK: move-file dmc-backend ( from to -- )
+HOOK: move-file-atomically dmc-backend ( from to -- )
 
 : move-file-into ( from to -- )
     to-directory move-file ;
@@ -96,7 +96,7 @@ HOOK: move-file-atomically io-backend ( from to -- )
     '[ _ move-file-into ] each ;
 
 ! Copying files
-HOOK: copy-file io-backend ( from to -- )
+HOOK: copy-file dmc-backend ( from to -- )
 
 M: object copy-file
     make-parent-directories binary <file-writer> [

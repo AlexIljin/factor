@@ -19,3 +19,4 @@ M: macosx-monitor dispose*
     [ handle>> dispose ] [ call-next-method ] bi ;
 
 macosx set-io-backend
+macosx set-dmc-backend

@@ -410,7 +410,7 @@ IN: tools.deploy.shaker
             "initial-thread" "threads" lookup-word ,
         ] unless
 
-        strip-io? [ io-backend , ] when
+        strip-io? [ io-backend , dmc-backend , ] when
 
         { } {
             "timers"

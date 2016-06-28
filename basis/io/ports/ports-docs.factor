@@ -25,6 +25,7 @@ $nl
 "Global native I/O protocol:"
 { $subsections
     io-backend
+    dmc-backend
     init-io
     init-stdio
     io-multiplex
