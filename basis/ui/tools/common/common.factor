@@ -40,7 +40,7 @@ SLOT: scroller
     scroller>> scroll-down-line ;
 
 : margins ( child -- border )
-    { 9 9 } <filled-border> ;
+    { 4 4 } <filled-border> ;
 
 : with-lines ( track -- track )
     dup orientation>> >>gap
