@@ -1,0 +1,7 @@
+1. check out the latest master;
+2. build with VS2015:
+  - start env-32.bat;
+  - run build-1.cmd;
+3. the new factor.exe should appear, but it will fail to bootstrap because enable-ctrl-break functions will be missing in the bootstrap image;
+4. run factor.exe and execute USE: bootstrap.image "windows-x86.32" make-image to produce a new bootstrap image;
+5. run build-2.cmd to create the full factor.image.
