@@ -71,6 +71,10 @@ TUPLE: number-parse
     ! don't use number= to allow 0. for "1/0."
     [ dup 0 = [ 2drop f ] [ / ] if ] [ drop f ] if* ; inline
 
+! TODO: magically make time
+: ?make-time ( num num/f -- time/f )
+    2drop f ; inline
+    
 TUPLE: float-parse
     { radix fixnum }
     { point fixnum }
@@ -272,10 +276,32 @@ DEFER: @neg-digit
     { fixnum number-parse integer } declare
     @split [ @denom-first-digit ] require-next-digit ?make-ratio ;
 
+: @time-digit-or-punc ( i number-parse n char -- n/f )
+    {
+        { CHAR: , [ [ @denom-digit ] require-next-digit ] }
+        { CHAR: . [ ->mantissa ] }
+        [ [ @time-digit ] or-exponent ]
+    } case ; inline
+
+: @time-digit ( i number-parse n char -- n/f )
+    { fixnum number-parse integer fixnum } declare
+    digit-in-radix [ [ @time-digit-or-punc ] add-digit ] [ @abort ] if ;
+
+: @time-first-digit ( i number-parse n char -- n/f )
+    {
+        { CHAR: . [ ->mantissa ] }
+        [ @time-digit ]
+    } case ; inline
+
+: ->time ( i number-parse n -- time/f )
+    { fixnum number-parse integer } declare
+    @split [ @time-first-digit ] require-next-digit ?make-time ;
+    
 : @num-digit-or-punc ( i number-parse n char -- n/f )
     {
         { CHAR: , [ [ @num-digit ] require-next-digit ] }
         { CHAR: / [ ->denominator ] }
+        { CHAR: : [ ->time ] }
         [ @num-digit ]
     } case ; inline
 
@@ -293,6 +319,7 @@ DEFER: @neg-digit
         { CHAR: + [ ->numerator ] }
         { CHAR: / [ ->denominator ] }
         { CHAR: . [ ->mantissa ] }
+        { CHAR: : [ ->time ] }
         [ [ @pos-digit ] or-exponent ]
     } case ; inline
 
