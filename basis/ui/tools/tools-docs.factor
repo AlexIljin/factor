@@ -44,6 +44,7 @@ $nl
 ;
 
 ARTICLE: "ui-windows" "Functionality specific to Windows"
+"TODO: add link describing the Ctrl-Break functionality."
 "Files can be dropped from other applications onto the listener window to push their names onto the stack:"
 { $subsections "filedrop-gestures" } ;
 
