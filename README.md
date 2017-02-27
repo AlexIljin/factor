@@ -39,6 +39,8 @@ which may be a misguided idea, I'll figure it out someday;
 * there is an alternative implementation of the fix for issue
 [1711](https://github.com/factor/factor/issues/1711), which suppresses the
 `bad-vocab-name` exception;
+* there is a Blake2b checksum implementation that uses the newly exported
+functions of a [custom-built Argon2 library](https://github.com/AlexIljin/phc-winner-argon2);
 * the `ui.gadgets.tables:line-gadget` tuple contains the new slot
 `fixed-column-widths`, which allows one to pre-set the column widths of a
 table and avoid their recalculations;
