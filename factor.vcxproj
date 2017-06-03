@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8F0ADCD6-3F72-4436-BB25-E1EEEAECE7D2}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;FACTOR_VERSION=version-missing;FACTOR_GIT_LABEL=git-label-missing;FACTOR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS ;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="vm\aging_collector.cpp" />
+    <ClCompile Include="vm\alien.cpp" />
+    <ClCompile Include="vm\arrays.cpp" />
+    <ClCompile Include="vm\bignum.cpp" />
+    <ClCompile Include="vm\byte_arrays.cpp" />
+    <ClCompile Include="vm\callbacks.cpp" />
+    <ClCompile Include="vm\callstack.cpp" />
+    <ClCompile Include="vm\code_blocks.cpp" />
+    <ClCompile Include="vm\code_heap.cpp" />
+    <ClCompile Include="vm\compaction.cpp" />
+    <ClCompile Include="vm\contexts.cpp" />
+    <ClCompile Include="vm\cpu-x86.cpp" />
+    <ClCompile Include="vm\data_heap.cpp" />
+    <ClCompile Include="vm\data_heap_checker.cpp" />
+    <ClCompile Include="vm\debug.cpp" />
+    <ClCompile Include="vm\dispatch.cpp" />
+    <ClCompile Include="vm\entry_points.cpp" />
+    <ClCompile Include="vm\errors.cpp" />
+    <ClCompile Include="vm\factor.cpp" />
+    <ClCompile Include="vm\ffi_test.c" />
+    <ClCompile Include="vm\full_collector.cpp" />
+    <ClCompile Include="vm\gc.cpp" />
+    <ClCompile Include="vm\image.cpp" />
+    <ClCompile Include="vm\inline_cache.cpp" />
+    <ClCompile Include="vm\instruction_operands.cpp" />
+    <ClCompile Include="vm\io.cpp" />
+    <ClCompile Include="vm\jit.cpp" />
+    <ClCompile Include="vm\main-windows.cpp" />
+    <ClCompile Include="vm\math.cpp" />
+    <ClCompile Include="vm\mvm-windows.cpp" />
+    <ClCompile Include="vm\mvm.cpp" />
+    <ClCompile Include="vm\nursery_collector.cpp" />
+    <ClCompile Include="vm\objects.cpp" />
+    <ClCompile Include="vm\object_start_map.cpp" />
+    <ClCompile Include="vm\os-windows-x86.32.cpp" />
+    <ClCompile Include="vm\os-windows.cpp" />
+    <ClCompile Include="vm\primitives.cpp" />
+    <ClCompile Include="vm\quotations.cpp" />
+    <ClCompile Include="vm\run.cpp" />
+    <ClCompile Include="vm\safepoints.cpp" />
+    <ClCompile Include="vm\sampling_profiler.cpp" />
+    <ClCompile Include="vm\strings.cpp" />
+    <ClCompile Include="vm\to_tenured_collector.cpp" />
+    <ClCompile Include="vm\tuples.cpp" />
+    <ClCompile Include="vm\utilities.cpp" />
+    <ClCompile Include="vm\vm.cpp" />
+    <ClCompile Include="vm\words.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vm\ffi_test.def" />
+    <None Include="vm\safeseh.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="extra\c\tests\test11\foo.h" />
+    <ClInclude Include="extra\c\tests\test1\hi.h" />
+    <ClInclude Include="extra\c\tests\test1\lo.h" />
+    <ClInclude Include="vm\aging_space.hpp" />
+    <ClInclude Include="vm\allot.hpp" />
+    <ClInclude Include="vm\arrays.hpp" />
+    <ClInclude Include="vm\assert.hpp" />
+    <ClInclude Include="vm\atomic-cl-32.hpp" />
+    <ClInclude Include="vm\atomic-cl-64.hpp" />
+    <ClInclude Include="vm\atomic-gcc.hpp" />
+    <ClInclude Include="vm\atomic.hpp" />
+    <ClInclude Include="vm\bignum.hpp" />
+    <ClInclude Include="vm\bignumint.hpp" />
+    <ClInclude Include="vm\bitwise_hacks.hpp" />
+    <ClInclude Include="vm\booleans.hpp" />
+    <ClInclude Include="vm\bump_allocator.hpp" />
+    <ClInclude Include="vm\byte_arrays.hpp" />
+    <ClInclude Include="vm\callbacks.hpp" />
+    <ClInclude Include="vm\callstack.hpp" />
+    <ClInclude Include="vm\code_blocks.hpp" />
+    <ClInclude Include="vm\code_heap.hpp" />
+    <ClInclude Include="vm\code_roots.hpp" />
+    <ClInclude Include="vm\contexts.hpp" />
+    <ClInclude Include="vm\cpu-arm.hpp" />
+    <ClInclude Include="vm\cpu-ppc.hpp" />
+    <ClInclude Include="vm\cpu-x86.32.hpp" />
+    <ClInclude Include="vm\cpu-x86.64.hpp" />
+    <ClInclude Include="vm\cpu-x86.hpp" />
+    <ClInclude Include="vm\data_heap.hpp" />
+    <ClInclude Include="vm\data_roots.hpp" />
+    <ClInclude Include="vm\debug.hpp" />
+    <ClInclude Include="vm\dispatch.hpp" />
+    <ClInclude Include="vm\errors.hpp" />
+    <ClInclude Include="vm\factor.hpp" />
+    <ClInclude Include="vm\ffi_test.h" />
+    <ClInclude Include="vm\fixup.hpp" />
+    <ClInclude Include="vm\float_bits.hpp" />
+    <ClInclude Include="vm\free_list.hpp" />
+    <ClInclude Include="vm\gc.hpp" />
+    <ClInclude Include="vm\gc_info.hpp" />
+    <ClInclude Include="vm\generic_arrays.hpp" />
+    <ClInclude Include="vm\image.hpp" />
+    <ClInclude Include="vm\inline_cache.hpp" />
+    <ClInclude Include="vm\instruction_operands.hpp" />
+    <ClInclude Include="vm\io.hpp" />
+    <ClInclude Include="vm\jit.hpp" />
+    <ClInclude Include="vm\layouts.hpp" />
+    <ClInclude Include="vm\mach_signal.hpp" />
+    <ClInclude Include="vm\mark_bits.hpp" />
+    <ClInclude Include="vm\master.hpp" />
+    <ClInclude Include="vm\math.hpp" />
+    <ClInclude Include="vm\mvm.hpp" />
+    <ClInclude Include="vm\objects.hpp" />
+    <ClInclude Include="vm\object_start_map.hpp" />
+    <ClInclude Include="vm\os-genunix.hpp" />
+    <ClInclude Include="vm\os-linux-arm.hpp" />
+    <ClInclude Include="vm\os-linux-ppc.32.hpp" />
+    <ClInclude Include="vm\os-linux-ppc.64.hpp" />
+    <ClInclude Include="vm\os-linux-x86.32.hpp" />
+    <ClInclude Include="vm\os-linux-x86.64.hpp" />
+    <ClInclude Include="vm\os-linux.hpp" />
+    <ClInclude Include="vm\os-macosx-x86.32.hpp" />
+    <ClInclude Include="vm\os-macosx-x86.64.hpp" />
+    <ClInclude Include="vm\os-macosx.hpp" />
+    <ClInclude Include="vm\os-unix.hpp" />
+    <ClInclude Include="vm\os-windows.32.hpp" />
+    <ClInclude Include="vm\os-windows.64.hpp" />
+    <ClInclude Include="vm\os-windows.hpp" />
+    <ClInclude Include="vm\platform.hpp" />
+    <ClInclude Include="vm\primitives.hpp" />
+    <ClInclude Include="vm\quotations.hpp" />
+    <ClInclude Include="vm\run.hpp" />
+    <ClInclude Include="vm\sampling_profiler.hpp" />
+    <ClInclude Include="vm\segments.hpp" />
+    <ClInclude Include="vm\slot_visitor.hpp" />
+    <ClInclude Include="vm\tagged.hpp" />
+    <ClInclude Include="vm\tenured_space.hpp" />
+    <ClInclude Include="vm\to_tenured_collector.hpp" />
+    <ClInclude Include="vm\utilities.hpp" />
+    <ClInclude Include="vm\vm.hpp" />
+    <ClInclude Include="vm\write_barrier.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

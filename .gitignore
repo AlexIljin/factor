@@ -32,3 +32,8 @@ checksums.txt
 *.so
 a.out
 Factor.app/Contents/_CodeSignature
+*.pdb
+*.pdf
+*.idb
+*.ilk
+*.user
