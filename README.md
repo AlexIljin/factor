@@ -29,6 +29,9 @@ upstream, not finished or are specific to my development environment;
 * the "unmaintained" folder is undeleted, because I like to browse it
 sometimes, and even bring some things to life (this reverts commit
 [9aacb296](https://github.com/AlexIljin/factor/commit/9aacb296));
+* the `ui.gadgets.tables:line-gadget` tuple contains the new slot
+`fixed-column-widths`, which allows one to pre-set the column widths of a
+table and avoid their recalculations;
 * other changes may be developed and contributed to upstream when ready,
 but the ones listed above represent either things not meant for general
 distribution or things already rejected.

@@ -39,6 +39,7 @@ single-click?
 { hook initial: [ drop ] }
 { gap initial: 2 }
 column-widths total-width
+fixed-column-widths
 focus-border-color
 mouse-color
 column-line-color
@@ -103,8 +104,12 @@ GENERIC: compute-column-widths ( table -- total widths )
 
 M: table compute-column-widths
     dup rows>> [ drop 0 { } ] [
-        [ drop gap>> ] [ initial-widths ] [ ] 2tri
-        [ row-column-widths vmax ] with each
+        over fixed-column-widths>> [
+            nip [ gap>> ] dip
+        ] [
+            [ drop gap>> ] [ initial-widths ] [ ] 2tri
+            [ row-column-widths vmax ] with each
+        ] if*
         [ compute-total-width ] keep
     ] if-empty ;
 
