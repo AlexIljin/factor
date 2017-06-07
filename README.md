@@ -34,6 +34,10 @@ sometimes, and even bring some things to life (this reverts commit
 * the `ui.gadgets.tables:line-gadget` tuple contains the new slot
 `fixed-column-widths`, which allows one to pre-set the column widths of a
 table and avoid their recalculations;
+* the custom ui.tools.inspector uses the `fixed-column-widths` to improve
+its performance when displaying large tables, while upstream developers
+decided to implement caching of the size calculations in this component
+instead of creating a mechanism available to all tables generically;
 * other changes may be developed and contributed to upstream when ready,
 but the ones listed above represent either things not meant for general
 distribution or things already rejected.
