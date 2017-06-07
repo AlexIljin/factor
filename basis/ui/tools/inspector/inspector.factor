@@ -7,9 +7,8 @@ prettyprint sequences sorting strings ui ui.commands ui.gadgets
 ui.gadgets.labeled ui.gadgets.panes ui.gadgets.scrollers
 ui.gadgets.status-bar ui.gadgets.tables
 ui.gadgets.tables.private ui.gadgets.toolbar ui.gadgets.tracks
-ui.gestures ui.operations ui.theme ui.tools.browser
+ui.gestures ui.operations ui.text ui.theme ui.tools.browser
 ui.tools.common ui.tools.inspector.slots unicode ;
-
 IN: ui.tools.inspector
 
 TUPLE: inspector-gadget < tool table ;
@@ -94,29 +93,31 @@ M: string make-slot-descriptions
 M: hashtable make-slot-descriptions
     call-next-method [ key-string>> ] sort-with ;
 
-TUPLE: inspector-table < table ;
-
-! Improve performance for big arrays or large hashtables by
-! only calculating column width for the longest key.
-M: inspector-table compute-column-widths
-    dup rows>> [ drop 0 { } ] [
-        [ drop gap>> ]
-        [ initial-widths ]
-        [ keys longest "" 2array row-column-widths ] 2tri
-        vmax [ compute-total-width ] keep
-    ] if-empty ;
+! If model is a sequence, get its maximum index, measure its width
+! rendered with the font, and use that as the Key column width (or
+! the "Key" column title width, whichever is greater). This
+! improves performance when inspecting big arrays.
+! Note: currently cell-dim always returns zero for string padding.
+! If that ever changes, the padding value has to be added to the
+! column width returned here.
+: maybe-fixed-column-widths ( font model -- widths/f )
+    value>> dup sequence? [
+        length 1 - number>string "Key" 2array
+        text-dim first 0 2array
+    ] [ 2drop f ] if ;
 
 : <inspector-table> ( model -- table )
-    [ make-slot-descriptions ] <arrow> inspector-renderer
-    inspector-table new-table
-        [ invoke-primary-operation ] >>action
-        monospace-font >>font
-        line-color >>column-line-color
-        6 >>gap
-        15 >>min-rows
-        15 >>max-rows
-        40 >>min-cols
-        40 >>max-cols ;
+    [
+        [ make-slot-descriptions ] <arrow> inspector-renderer <table>
+            [ invoke-primary-operation ] >>action
+            line-color >>column-line-color
+            6 >>gap
+            15 >>min-rows
+            15 >>max-rows
+            40 >>min-cols
+            40 >>max-cols
+            monospace-font [ >>font ] keep
+    ] keep maybe-fixed-column-widths >>fixed-column-widths ;
 
 : <inspector-gadget> ( model -- gadget )
     vertical inspector-gadget new-track with-lines
