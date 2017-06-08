@@ -97,13 +97,10 @@ M: hashtable make-slot-descriptions
 ! rendered with the font, and use that as the Key column width (or
 ! the "Key" column title width, whichever is greater). This
 ! improves performance when inspecting big arrays.
-! Note: currently cell-dim always returns zero for string padding.
-! If that ever changes, the padding value has to be added to the
-! column width returned here.
-: maybe-fixed-column-widths ( font model -- widths/f )
+: maybe-fixed-column-widths ( table model -- widths/f )
     value>> dup sequence? [
-        length 1 - number>string "Key" 2array
-        text-dim first 0 2array
+        length 1 - number>string "Key" 2array row-column-widths
+        supremum 0 2array
     ] [ 2drop f ] if ;
 
 : <inspector-table> ( model -- table )
@@ -116,7 +113,8 @@ M: hashtable make-slot-descriptions
             15 >>max-rows
             40 >>min-cols
             40 >>max-cols
-            monospace-font [ >>font ] keep
+            monospace-font >>font
+            dup
     ] keep maybe-fixed-column-widths >>fixed-column-widths ;
 
 : <inspector-gadget> ( model -- gadget )
