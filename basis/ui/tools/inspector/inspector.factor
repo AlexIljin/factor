@@ -94,13 +94,14 @@ M: hashtable make-slot-descriptions
     call-next-method [ key-string>> ] sort-with ;
 
 ! If model is a sequence, get its maximum index, measure its width
-! rendered with the font, and use that as the Key column width (or
-! the "Key" column title width, whichever is greater). This
+! rendered with the font, and use that as the first column width (or
+! the first column title width, whichever is greater). This
 ! improves performance when inspecting big arrays.
 : maybe-fixed-column-widths ( table model -- widths/f )
     value>> dup sequence? [
-        length 1 - number>string "Key" 2array row-column-widths
-        supremum 0 2array
+        length 1 - number>string
+        over renderer>> column-titles first
+        2array row-column-widths supremum 0 2array
     ] [ 2drop f ] if ;
 
 : <inspector-table> ( model -- table )
