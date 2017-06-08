@@ -97,12 +97,20 @@ M: hashtable make-slot-descriptions
 ! rendered with the font, and use that as the first column width (or
 ! the first column title width, whichever is greater). This
 ! improves performance when inspecting big arrays.
-: maybe-fixed-column-widths ( table model -- widths/f )
+: first-column-width ( table model -- width )
     value>> dup sequence? [
         length 1 - number>string
         over renderer>> column-titles first
-        2array row-column-widths supremum 0 2array
-    ] [ 2drop f ] if ;
+        2array row-column-widths supremum
+    ] [
+        [
+            [ font>> dup ] keep
+            renderer>> column-titles first cell-dim nip +
+        ] dip make-mirror [
+            ! font prev key value
+            drop unparse-short [ over ] dip cell-dim nip + max
+        ] assoc-each nip
+    ] if ;
 
 : <inspector-table> ( model -- table )
     [
@@ -116,7 +124,7 @@ M: hashtable make-slot-descriptions
             40 >>max-cols
             monospace-font >>font
             dup
-    ] keep maybe-fixed-column-widths >>fixed-column-widths ;
+    ] keep first-column-width 0 2array >>fixed-column-widths ;
 
 : <inspector-gadget> ( model -- gadget )
     vertical inspector-gadget new-track with-lines
