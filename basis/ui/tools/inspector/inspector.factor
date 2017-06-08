@@ -99,18 +99,12 @@ M: hashtable make-slot-descriptions
 ! improves performance when inspecting big arrays.
 : first-column-width ( table model -- width )
     value>> dup sequence? [
-        length 1 - number>string
-        over renderer>> column-titles first
-        2array row-column-widths supremum
+        length 1 - 1array
     ] [
-        [
-            [ font>> dup ] keep
-            renderer>> column-titles first cell-dim nip +
-        ] dip make-mirror [
-            ! font prev key value
-            drop unparse-short [ over ] dip cell-dim nip + max
-        ] assoc-each nip
-    ] if ;
+        make-mirror keys
+    ] if [ unparse-short ] map
+    over renderer>> column-titles first suffix
+    row-column-widths supremum ;
 
 : <inspector-table> ( model -- table )
     [
