@@ -106,17 +106,16 @@ M: hashtable make-slot-descriptions
     dupd first-column-width 0 2array >>fixed-column-widths ;
 
 : <inspector-table> ( model -- table )
-    [
-        [ make-slot-descriptions ] <arrow> inspector-renderer <table>
-            [ invoke-primary-operation ] >>action
-            line-color >>column-line-color
-            6 >>gap
-            15 >>min-rows
-            15 >>max-rows
-            40 >>min-cols
-            40 >>max-cols
-            monospace-font >>font
-    ] keep fix-column-widths ;
+    dup [ make-slot-descriptions ] <arrow> inspector-renderer <table>
+        [ invoke-primary-operation ] >>action
+        line-color >>column-line-color
+        monospace-font >>font
+        6 >>gap
+        15 >>min-rows
+        15 >>max-rows
+        40 >>min-cols
+        40 >>max-cols
+        swap fix-column-widths ;
 
 : <inspector-gadget> ( model -- gadget )
     vertical inspector-gadget new-track with-lines
