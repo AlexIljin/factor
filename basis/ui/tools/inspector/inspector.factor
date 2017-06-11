@@ -132,7 +132,8 @@ M: inspector-gadget focusable-child*
     table>> ;
 
 : com-refresh ( inspector -- )
-    model>> notify-connections ;
+    [ model>> notify-connections ] keep
+    [ table>> ] [ model>> ] bi fix-column-widths drop ;
 
 : com-push ( inspector -- obj )
     control-value ;
