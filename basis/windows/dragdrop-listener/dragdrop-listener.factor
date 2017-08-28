@@ -2,7 +2,7 @@
 ! Copyright (C) 2017-2018 Alexander Ilin.
 ! See http://factorcode.org/license.txt for BSD license.
 USING: accessors alien.accessors classes.struct kernel
-namespaces sequences ui.backend.windows ui.gadgets.worlds
+namespaces sequences ui ui.backend.windows ui.gadgets.worlds
 ui.gestures windows.com windows.com.wrapper windows.dropfiles
 windows.kernel32 windows.ole32 windows.user32 ;
 IN: windows.dragdrop-listener
@@ -65,11 +65,28 @@ SYMBOL: +listener-dragdrop-wrapper+
 } <com-wrapper> +listener-dragdrop-wrapper+ set-global
 >>
 
-: dragdrop-listener-window ( -- )
-    world get dup <listener-dragdrop>
+: dragdrop-listener-window ( world -- )
+    dup <listener-dragdrop>
     +listener-dragdrop-wrapper+ get-global com-wrap [
         [ handle>> hWnd>> ] dip
         2dup RegisterDragDrop dup E_OUTOFMEMORY =
         [ drop ole-initialize RegisterDragDrop ] [ 2nip ] if
         check-ole32-error
     ] with-com-interface ;
+
+! TODO: store a link to the listener gadget.
+! TODO: listener can only accept a drop if it's not busy
+! Dropping onto a specific listener is trickier than I thought initially. A
+! listener may be busy doing something, in which case it should reject the drops.
+! TODO: unregister listener from receiving the drop notifications to release the
+! COM interface object, and the listener itself, when the window is closed.
+
+SYMBOL: listeners
+
+! USING: ui.gadgets ui.gestures windows.dragdrop-listener ui.backend.windows ;
+! dragdrop-listener-windows { "some files" } dropped-files set-global
+! key-modifiers <file-drop> listeners get-global [ gadget-child ] map
+! [ propagate-gesture ] with each
+
+: dragdrop-listener-windows ( -- )
+    [ listener-gadget? ] find-windows dup listeners set-global [ dragdrop-listener-window ] each ;

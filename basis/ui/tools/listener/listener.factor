@@ -481,6 +481,15 @@ listener-gadget "file-drop" "Files can be drag-and-dropped onto the listener."
     { T{ file-drop f f } com-file-drop }
 } define-command-map
 
+! TODO: when a gadget is grafted, and its class has a command-map with the
+! file-drop gesture reaction, we may call the world-accept-files for the window
+! Or we may check every gadget on a window when that gadget is added. Is there
+! a way to handle adding a gadget to the window? Do we have all the gadgets
+! typically available at the point of creating a native window? If we have all
+! the gadgets, we can simply check them all (via the children slot) and as soon
+! as one found that handles the file-drop, we mark the window handle to accept
+! dropfiles (via a hook, perhaps? or simply in a platform-specific code).
+
 M: listener-gadget graft*
     [ call-next-method ] [ restart-listener ] bi ;
 
