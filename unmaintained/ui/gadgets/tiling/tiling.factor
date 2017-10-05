@@ -27,7 +27,7 @@ Example:
 
     <tiling-shelf>
       "resource:" directory-files
-        [ [ drop ] <bevel-button> tiling-add ]
+        [ [ drop ] <border-button> tiling-add ]
       each
     "Files" open-window ..
 

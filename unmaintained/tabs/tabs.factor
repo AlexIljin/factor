@@ -14,7 +14,7 @@ DEFER: (del-page)
 
 :: add-toggle ( n name model toggler -- )
   <frame>
-    n name toggler parent>> '[ drop _ _ _ (del-page) ] "X" swap <bevel-button>
+    n name toggler parent>> '[ drop _ _ _ (del-page) ] "X" swap <border-button>
       @right grid-add
     n model name <toggle-button> @center grid-add
   toggler swap add-gadget drop ;

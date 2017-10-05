@@ -48,7 +48,7 @@ VAR: slate
 
 : view-action ( quot -- quot ) '[ drop _ with-view ] closed-quot ;
 
-: view-button ( label quot -- button ) [ <label> ] dip view-action <bevel-button> ;
+: view-button ( label quot -- button ) [ <label> ] dip view-action <border-button> ;
 
 ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
