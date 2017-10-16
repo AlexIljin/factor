@@ -1,1 +1,1 @@
-Slides from a talk by Slava Pestov, July 2010
+Slides from a talk at Emerging Languages Camp 2010 by Slava Pestov, July 2010
