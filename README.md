@@ -62,6 +62,11 @@ My Inspector            Upstream Inspector
 9   r   \u{72}          9   r
 10  \n  \x0a            10  \n
 ```
+* the parameters for the `limit-stream` word of the `io.streams.limited`
+are swapped compared to the original Factor implementation. I think my
+version makes the usage simpler, requiring less stack shuffling for typical
+usage, but the upstream developers decided they don't want to break
+compatibility by introducing this change;
 * other changes may be developed and contributed to upstream when ready,
 but the ones listed above represent either things not meant for general
 distribution or things already rejected.
