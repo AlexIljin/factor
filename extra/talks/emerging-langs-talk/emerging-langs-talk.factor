@@ -64,7 +64,7 @@ CONSTANT: emerging-langs-slides
         { "Constant folding across source file boundaries!" }
     }
     { $slide "Tuple reshaping demo"
-        { "Vocabulary defines a data type: " { $vocab-link "talks.emerging-langs-talk.planet.info" } }
+        { "Vocabulary defines a data type: " { $vocab-link "talks.emerging-langs-talk.planet.data" } }
         {
             { "Let's make an instance of this type" }
             { $code
