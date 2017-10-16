@@ -12,7 +12,7 @@ The prices.txt example requires that the current working directory is
 set appropriately, so you can do
 
 USE: io.directories
-"/Users/slava/emerginglangs/" set-current-directory
+"/Users/slava/factor/talks/emerging-langs-talk/" set-current-directory
 
 To run the gpu.demos.raytrace demo at the end, right-click on the link
 and pick 'Run' from the menu, or just type this in the listener window:
