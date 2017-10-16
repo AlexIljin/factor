@@ -82,21 +82,21 @@ namespaces strings tools.test ;
 
 { t }
 [
-    "abc" <string-reader> 3 limit-stream unlimit-stream
+    3 "abc" <string-reader> limit-stream unlimit-stream
     "abc" <string-reader> =
 ] unit-test
 
 { t }
 [
-    "abc" <string-reader> 3 limit-stream unlimit-stream
+    3 "abc" <string-reader> limit-stream unlimit-stream
     "abc" <string-reader> =
 ] unit-test
 
 { t }
 [
     [
-        "resource:LICENSE.txt" utf8 <file-reader> &dispose
-        3 limit-stream unlimit-stream
+        3 "resource:LICENSE.txt" utf8 <file-reader> &dispose
+        limit-stream unlimit-stream
         "resource:LICENSE.txt" utf8 <file-reader> &dispose
         [ decoder? ] both?
     ] with-destructors

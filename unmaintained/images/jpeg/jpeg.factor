@@ -119,7 +119,7 @@ TUPLE: jpeg-color-info
     ] with-byte-reader ;
 
 : decode-huff-table ( chunk -- )
-    data>> [ binary <byte-reader> ] [ length ] bi limit-stream [
+    data>> [ length ] [ binary <byte-reader> ] bi limit-stream [
         [ input-stream get stream>> [ count>> ] [ limit>> ] bi < ]
         [
             read4/4 swap 2 * +
