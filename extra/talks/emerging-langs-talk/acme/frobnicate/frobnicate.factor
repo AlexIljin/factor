@@ -1,4 +1,4 @@
-USING: arrays kernel math strings unicode.case ;
+USING: arrays kernel math strings unicode unicode.case ;
 IN: talks.emerging-langs-talk.acme.frobnicate
 
 GENERIC: my-generic ( x -- y )
