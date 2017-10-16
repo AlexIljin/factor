@@ -49,7 +49,7 @@ CONSTANT: emerging-langs-slides
     { $slide "Compilation errors demo"
         { "First vocabulary defines a word:" { $code "USE: talks.emerging-langs-talk.acme.widgets.supply" } }
         { "Second vocabulary uses above word:" { $code "USE: talks.emerging-langs-talk.acme.widgets.factory" } }
-        { "If I add or a parameter, the compiler tells me to update code" }
+        { "If I add or remove a parameter, the compiler tells me to update code" }
     }
     { $slide "Help system demo"
         "Let's go ahead and document stuff"
