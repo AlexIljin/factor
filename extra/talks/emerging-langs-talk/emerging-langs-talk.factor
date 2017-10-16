@@ -55,7 +55,7 @@ CONSTANT: emerging-langs-slides
         "Let's go ahead and document stuff"
         { $code
             "USE: tools.scaffold"
-            "\"talks.emerging-langs-talk.acme.widgets.supply\" scaffold-help"
+            "\"talks.emerging-langs-talk.acme.widgets.supply\" scaffold-docs"
         }
     }
     { $slide "Inlining and recompilation demo"
