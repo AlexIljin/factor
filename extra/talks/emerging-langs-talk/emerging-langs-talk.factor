@@ -97,6 +97,6 @@ CONSTANT: emerging-langs-slides
 }
 
 : emerging-langs-talk ( -- )
-    emerging-langs-slides slides-window ;
+    emerging-langs-slides "Emerging langs talk" slides-window ;
 
 MAIN: emerging-langs-talk
