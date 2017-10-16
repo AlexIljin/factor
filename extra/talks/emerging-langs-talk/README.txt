@@ -3,8 +3,7 @@ Make sure to get the development release, not the stable release.
 
 Run Factor, and type
 
-"/Users/slava/emerginglangs/" add-vocab-root
-"emerging-langs-talk" run
+"talks.emerging-langs-talk" run
 
 Of course replacing the path with the path to the directory containing
 README.txt.

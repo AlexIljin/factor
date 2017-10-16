@@ -2,7 +2,7 @@
 ! See http://factorcode.org/license.txt for BSD license.
 USING: slides help.markup math math.private kernel sequences
 slots.private see help ;
-IN: emerging-langs-talk
+IN: talks.emerging-langs-talk
 
 CONSTANT: emerging-langs-slides
 {
@@ -44,27 +44,27 @@ CONSTANT: emerging-langs-slides
         "In most dynamic languages, loading a source file == copy and paste into REPL"
         "This is wrong!"
         "Removing definitions from a source file and reloading it should remove them from the image"
-        { $code "USE: acme.frobnicate" }
+        { $code "USE: talks.emerging-langs-talk.acme.frobnicate" }
     }
     { $slide "Compilation errors demo"
-        { "First vocabulary defines a word:" { $code "USE: acme.widgets.supply" } }
-        { "Second vocabulary uses above word:" { $code "USE: acme.widgets.factory" } }
+        { "First vocabulary defines a word:" { $code "USE: talks.emerging-langs-talk.acme.widgets.supply" } }
+        { "Second vocabulary uses above word:" { $code "USE: talks.emerging-langs-talk.acme.widgets.factory" } }
         { "If I add or a parameter, the compiler tells me to update code" }
     }
     { $slide "Help system demo"
         "Let's go ahead and document stuff"
         { $code
             "USE: tools.scaffold"
-            "\"acme.widgets.supply\" scaffold-help"
+            "\"talks.emerging-langs-talk.acme.widgets.supply\" scaffold-help"
         }
     }
     { $slide "Inlining and recompilation demo"
-        { "First vocabulary with a couple of constants:" { $code "USE: planet.earth.constants" } }
-        { "Second vocabulary uses these constants:" { $code "USE: planet.earth.physics" } }
+        { "First vocabulary with a couple of constants:" { $code "USE: talks.emerging-langs-talk.planet.earth.constants" } }
+        { "Second vocabulary uses these constants:" { $code "USE: talks.emerging-langs-talk.planet.earth.physics" } }
         { "Constant folding across source file boundaries!" }
     }
     { $slide "Tuple reshaping demo"
-        { "Vocabulary defines a data type: " { $vocab-link "planet.info" } }
+        { "Vocabulary defines a data type: " { $vocab-link "talks.emerging-langs-talk.planet.info" } }
         {
             { "Let's make an instance of this type" }
             { $code

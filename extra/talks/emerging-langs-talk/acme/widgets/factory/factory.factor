@@ -1,7 +1,8 @@
 ! Copyright (C) 2010 Slava Pestov.
 ! See http://factorcode.org/license.txt for BSD license.
-USING: acme.widgets.supply combinators io kernel math namespaces ;
-IN: acme.widgets.factory
+USING: combinators io kernel math namespaces
+talks.emerging-langs-talk.acme.widgets.supply ;
+IN: talks.emerging-langs-talk.acme.widgets.factory
 
 SYMBOL: widgets
 
