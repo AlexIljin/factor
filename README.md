@@ -28,6 +28,9 @@ implementation:
 * main work is done in the `mine` branch;
 * the commits starting with `!mine!`, `!todo!` or `!wip!` are not meant for
 upstream, not finished or are specific to my development environment;
+* the "unmaintained" folder is undeleted, because I like to browse it
+sometimes, and even bring some things to life (this reverts commit
+[9aacb296](https://github.com/AlexIljin/factor/commit/9aacb296));
 * other changes may be developed and contributed to upstream when ready,
 but the ones listed above represent either things not meant for general
 distribution or things already rejected.
@@ -139,7 +142,7 @@ The Factor source tree is organized as follows:
 * `basis/` - Factor basis library, compiler, tools
 * `extra/` - more libraries and applications
 * `misc/` - editor modes, icons, etc
-* `unmaintained/` - now at [factor-unmaintained](https://github.com/factor/factor-unmaintained)
+* `unmaintained/` - unmaintained contributions, please help!
 
 ## Source History
 
