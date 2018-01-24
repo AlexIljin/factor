@@ -1,0 +1,32 @@
+﻿Hello!
+
+I want to describe how to run Factors unit testing suite. Perhaps not
+everyone on the mailing list knows about it? Anyways, running the test
+suites and reporting any failures is a great way to improve
+Factor. Unexpected test failures can reveal bugs that are otherwise
+very hard to find.
+
+Here is how you do it on Windows:
+
+1. First you download a release of Factor and get it running.
+2. Go either to http://downloads.factorcode.org/dlls/64/ or
+   http://downloads.factorcode.org/dlls/ for 64 and 32bit builds of
+   Factor respectively.
+3. Download all the dlls and put them in the same directory as the
+   factor.exe file.
+4. Run factor.com -run=listener in a cmd.exe window.
+5. Then type "load-all test-all"
+6. Then go for a walk or something :) It takes up to two hours
+   for all the test suites to finish.
+7. If there are test failures you can inspect them by running the
+   :test-failures word.
+8. If there are so many test failures that they fill up the scrollback
+   buffer, you can save them to a file using: [ :test-failures ]
+   with-string-writer "test.log" utf8 set-file-contents
+
+If you don't have time for all the test suites, you can run the most
+important ones using only "test-all" without "load-all".
+
+
+--
+mvh/best regards Björn Lindqvist
