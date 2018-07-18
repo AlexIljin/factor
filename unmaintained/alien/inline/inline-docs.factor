@@ -100,7 +100,7 @@ HELP: delete-inline-library
     { "name" string }
 }
 { $description "Delete the shared library file corresponding to " { $snippet "name" } "." }
-{ $notes "Must be executed in the vocabulary where " { $snippet "name" } " is defined. " } ;
+{ $notes "Must be executed in the vocabulary where " { $snippet "name" } " is defined." } ;
 
 HELP: with-c-library
 { $values

@@ -16,7 +16,7 @@ HELP: derivative
     }
     { $notes
         "For applied scientists, you may play with the settings "
-        "in the source file to achieve arbitrary accuracy. "
+        "in the source file to achieve arbitrary accuracy."
     }
 } ;
 
@@ -58,7 +58,7 @@ HELP: (derivative)
     }
     { $notes
         "For applied scientists, you may play with the settings "
-        "in the source file to achieve arbitrary accuracy. "
+        "in the source file to achieve arbitrary accuracy."
     }
 } ;
 

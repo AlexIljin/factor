@@ -86,7 +86,7 @@ HELP: COMPILE-AS-C++
 
 HELP: DELETE-C-LIBRARY:
 { $syntax "DELETE-C-LIBRARY: name" }
-{ $description "Deletes the shared library file corresponding to " { $snippet "name" } " . " }
+{ $description "Deletes the shared library file corresponding to " { $snippet "name" } "." }
 { $notes
   { $list
     { "Must be executed in the vocabulary where " { $snippet "name" } " is defined. " }
