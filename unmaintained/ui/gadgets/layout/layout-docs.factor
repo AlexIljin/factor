@@ -43,7 +43,7 @@ ARTICLE: "ui.gadgets.layout" "GUI Layout"
 ". Gadgets are layed out using " { $vocab-link "ui.gadgets.tracks" } " through " { $link <hbox> } " and " { $link <vbox> } ", which allow both fixed and percentage widths. "
 { $link , } " and " { $link -> }  " add a model or gadget to the gadget you're building. "
 "Also, books can be made with " { $link <book> } ". "
-{ $link <spacer> } "s add flexable space between items. " $nl
+{ $link <spacer> } "s add flexable space between items." $nl
 "Using " { $link with-interface } ", one can pre-build templates to add items to later: "
 "Like in the StringTemplate framework for java, placeholders are defined using $ PLACERHOLDER-NAME $ "
 "Using PLACEHOLDER-NAME again sets it as the current insertion point. "
