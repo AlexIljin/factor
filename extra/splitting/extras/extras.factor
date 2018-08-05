@@ -1,4 +1,5 @@
-USING: hints kernel math sequences sequences.private strings ;
+USING: hints kernel math math.statistics sequences sequences.private
+splitting strings ;
 IN: splitting.extras
 
 <PRIVATE
@@ -73,3 +74,6 @@ PRIVATE>
 
 { split* split*-slice split-harvest }
 [ { string string } set-specializer ] each
+
+: split-lengths ( seq lengths -- pieces )
+    cum-sum split-indices ;
