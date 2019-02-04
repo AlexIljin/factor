@@ -71,19 +71,21 @@ M: object make-slot-descriptions
 M: string make-slot-descriptions
     [
         swap [ dup number>string ] dip dup
-        dup printable? [ 1string ] [
+        dup printable? [
+            dup 1string swap "%s   \\u{%x}" sprintf
+        ] [
             dup 0xff <= [
                 H{
-                    { CHAR: \a "\\a" }
-                    { CHAR: \b "\\b" }
-                    { CHAR: \e "\\e" }
-                    { CHAR: \f "\\f" }
-                    { CHAR: \n "\\n" }
-                    { CHAR: \r "\\r" }
-                    { CHAR: \t "\\t" }
-                    { CHAR: \v "\\v" }
-                    { CHAR: \0 "\\0" }
-                } ?at [ "\\x%02x" sprintf ] unless
+                    { CHAR: \a "\\a  \\x07" }
+                    { CHAR: \b "\\b  \\x08" }
+                    { CHAR: \e "\\e  \\x1b" }
+                    { CHAR: \f "\\f  \\x0c" }
+                    { CHAR: \n "\\n  \\x0a" }
+                    { CHAR: \r "\\r  \\x0d" }
+                    { CHAR: \t "\\t  \\x09" }
+                    { CHAR: \v "\\v  \\x0b" }
+                    { CHAR: \0 "\\0  \\x00" }
+                } ?at [ "    \\x%02x" sprintf ] unless
             ] [
                 "\\u{%x}" sprintf
             ] if
