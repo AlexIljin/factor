@@ -36,6 +36,32 @@ table and avoid their recalculations;
 its performance when displaying large tables, while upstream developers
 decided to implement caching of the size calculations in this component
 instead of creating a mechanism available to all tables generically;
+* another customization of the ui.tools.inspector is related to the
+inspection of strings: my version of the Inspector always displays two
+representations of each character - its printable version, if any, and its
+character code that could be used in the Factor source. The upstream
+developers decided they don't need to show character codes for the
+printable characters, and for the unprintable lower part of the ASCII table
+they only show the escape code, but not the hexadecimal code. I think that
+my version of the Inspector is better, because it allows one to see the
+code differences for the identically looking characters, and it produces a
+more consistent view of the lower ASCII table. See for example the string
+"\0\x01\tТорGеаr\n", which has some Cyrillic characters embedded in it,
+viewed in both Inspector versions:
+```
+My Inspector            Upstream Inspector
+0   \0  \x00            0   \0
+1       \x01            1   \x01
+2   \t  \x09            2   \t
+3   Т   \u{422}         3   Т
+4   о   \u{43e}         4   о
+5   р   \u{440}         5   р
+6   G   \u{47}          6   G
+7   е   \u{435}         7   е
+8   а   \u{430}         8   а
+9   r   \u{72}          9   r
+10  \n  \x0a            10  \n
+```
 * other changes may be developed and contributed to upstream when ready,
 but the ones listed above represent either things not meant for general
 distribution or things already rejected.
