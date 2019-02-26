@@ -18,6 +18,18 @@ applications](https://concatenative.org/wiki/view/Factor/Deployment) on all
 platforms.  Full source code for the Factor project is available under a BSD
 license.
 
+## About This Fork
+
+There are several differences between this fork and the upstream Factor
+implementation:
+
+* main work is done in the `mine` branch;
+* the commits starting with `!mine!`, `!todo!` or `!wip!` are not meant for
+upstream, not finished or are specific to my development environment;
+* other changes may be developed and contributed to upstream when ready,
+but the ones listed above represent either things not meant for general
+distribution or things already rejected.
+
 ## Getting Started
 
 ### Building Factor from source
