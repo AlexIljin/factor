@@ -65,6 +65,7 @@ os windows?
         [ "    \\.." parent-directory ] must-fail
         [ "    \\..\\" parent-directory ] must-fail
         [ "" parent-directory ] must-fail
+        [ "\\" parent-directory ] [ no-parent-directory? ] must-fail-with
     ]
     [
         [ "    /bar/." parent-directory ] must-fail
@@ -79,6 +80,7 @@ os windows?
         [ "    /.." parent-directory ] must-fail
         [ "    /../" parent-directory ] must-fail
         [ "" parent-directory ] must-fail
+        [ "/" parent-directory ] [ no-parent-directory? ] must-fail-with
     ]
     if
 
