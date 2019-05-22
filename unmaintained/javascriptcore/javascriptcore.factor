@@ -15,7 +15,7 @@ SYMBOL: js-context
         [ f JSGlobalContextCreate dup js-context set ] dip
         [ nip '[ @ ] ]
         [ drop '[ _ JSGlobalContextRelease ] ] 2bi
-        [ ] cleanup
+        finally
     ] with-scope ; inline
 
 : with-javascriptcore ( quot -- )

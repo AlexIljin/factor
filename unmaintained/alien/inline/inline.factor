@@ -125,7 +125,7 @@ PRIVATE>
 
 : with-c-library ( name quot -- )
     [ [ define-c-library ] dip call compile-c-library ]
-    [ cleanup-variables ] [ ] cleanup ; inline
+    [ cleanup-variables ] finally ; inline
 
 : raw-c ( str -- )
     [ "\n" % % "\n" % ] "" make c-strings get push ;
