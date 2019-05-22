@@ -39,7 +39,7 @@ M: offscreen-world ungraft*
 
 : do-offscreen ( gadget quot: ( offscreen-world -- ) -- )
     [ open-offscreen ] dip
-    over [ slip ] [ close-offscreen ] [ ] cleanup ; inline
+    over [ slip ] [ close-offscreen ] finally ; inline
 
 : gadget>bitmap ( gadget -- image )
     [ offscreen-world>bitmap ] do-offscreen ;
