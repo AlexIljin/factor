@@ -109,6 +109,9 @@ SYMBOL: option
         ] if
     ] change ;
 
+! FIXME: comment characters in values don't work, it's not possible to
+! quote a value or escape the comment character.
+
 : parse-line ( line -- )
     uncomment unspace dup section? [
         section, 1 + cut [ [section] ] [ unspace ] bi*
