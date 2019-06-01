@@ -104,7 +104,7 @@ M: light-theme menu-border-color COLOR: grey75 ;
 M: light-theme status-bar-background COLOR: FactorDarkSlateBlue ;
 M: light-theme status-bar-foreground COLOR: white ;
 
-M: light-theme button-text-color COLOR: FactorDarkSlateBlue ;
+M: light-theme button-text-color COLOR: DodgerBlue ;
 M: light-theme button-clicked-text-color COLOR: white ;
 
 M: light-theme line-color COLOR: grey75 ;
