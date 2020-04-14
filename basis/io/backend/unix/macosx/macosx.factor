@@ -15,7 +15,6 @@ M: macosx init-io
     <run-loop-mx> mx set-global ;
 
 macosx set-io-backend
-macosx set-dmc-backend
 
 [ start-signal-pipe-thread ]
 "io.backend.unix:signal-pipe-thread" add-startup-hook

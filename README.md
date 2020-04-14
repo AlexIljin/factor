@@ -31,11 +31,6 @@ upstream, not finished or are specific to my development environment;
 * the "unmaintained" folder is undeleted, because I like to browse it
 sometimes, and even bring some things to life (this reverts commit
 [9aacb296](https://github.com/AlexIljin/factor/commit/9aacb296));
-* there is a new `dmc-backend` hook separated from the `io-backend`. This
-new hook handles the file/folder **d**elete, **m**ove and **c**opy
-operations.
-I'm experimenting with a custom replaceable backend for these operations,
-which may be a misguided idea, I'll figure it out someday;
 * there is an alternative implementation of the fix for issue
 [1711](https://github.com/factor/factor/issues/1711), which suppresses the
 `bad-vocab-name` exception;

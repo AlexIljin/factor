@@ -9,6 +9,5 @@ M: linux init-io
     <epoll-mx> mx set-global ;
 
 linux set-io-backend
-linux set-dmc-backend
 
 [ start-signal-pipe-thread ] "io.backend.unix:signal-pipe-thread" add-startup-hook

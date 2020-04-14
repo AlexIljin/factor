@@ -6,4 +6,3 @@ IN: io.backend.windows
 "io.files.windows" require
 
 windows set-io-backend
-windows set-dmc-backend
