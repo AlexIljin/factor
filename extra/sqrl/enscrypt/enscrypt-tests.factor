@@ -88,9 +88,9 @@ CONSTANT: test-vectors {
 }
 
 { t } [
-    test-vectors [ first4 enscrypt swap sodium-base64>bin = ] all?
+    test-vectors [ first4 -rot enscrypt swap sodium-base64>bin = ] all?
 ] unit-test
 
 { 1 } [ "" "" 0 timed-enscrypt nip ] unit-test
 
-{ t } [ "" "" 2dup 1000 timed-enscrypt swap [ enscrypt ] dip = ] unit-test
+{ t } [ "" "" 2dup 1000 timed-enscrypt -roll [ enscrypt ] dip = ] unit-test

@@ -22,8 +22,8 @@ CONSTANT: N 512
 : ?encode2 ( str1 str2 -- bytes1 bytes2 )
     [ dup string? [ utf8 encode ] when ] bi@ ;
 
-: enscrypt ( password salt iterations -- 32-bytes )
-    [ ?encode2 dupd scrypt-bytes dup ] dip 1 - [
+: enscrypt ( iterations password salt -- 32-bytes )
+    ?encode2 dupd scrypt-bytes dup roll 1 - [
         [ dupd scrypt-bytes dup ] dip vbitxor
     ] times 2nip ;
 
