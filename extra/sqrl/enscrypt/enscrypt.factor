@@ -14,10 +14,15 @@ IN: sqrl.enscrypt
 
 CONSTANT: N 512
 
-: scrypt-bytes ( password-bytes salt-bytes -- bytes )
-    [ dup length ] bi@ N 256 1 32 <byte-array> [
-        32 crypto_pwhash_scryptsalsa208sha256_ll check0
+! hash-bytes must be at least 32 bytes long, it will contain the hash output.
+: scrypt-bytes-to ( password-bytes salt-bytes hash-bytes -- hash-bytes' )
+    [
+        [ dup length ] tri@ [ N 256 1 ] 2dip
+        crypto_pwhash_scryptsalsa208sha256_ll check0
     ] keep ; inline
+
+: scrypt-bytes ( password-bytes salt-bytes -- bytes )
+    32 <byte-array> scrypt-bytes-to ; inline
 
 : ?encode2 ( str1 str2 -- bytes1 bytes2 )
     [ dup string? [ utf8 encode ] when ] bi@ ;
