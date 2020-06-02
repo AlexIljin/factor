@@ -3,10 +3,11 @@
 USING:
     byte-arrays
     io.encodings.string io.encodings.utf8
-    kernel
+    kernel locals
     math math.vectors
     sequences
     sodium sodium.ffi
+    strings system
 ;
 
 IN: sqrl.enscrypt
@@ -18,7 +19,18 @@ CONSTANT: N 512
         32 crypto_pwhash_scryptsalsa208sha256_ll check0
     ] keep ; inline
 
+: ?encode2 ( str1 str2 -- bytes1 bytes2 )
+    [ dup string? [ utf8 encode ] when ] bi@ ;
+
 : enscrypt ( password salt iterations -- 32-bytes )
-    [ [ utf8 encode ] bi@ dupd scrypt-bytes dup ] dip 1 - [
+    [ ?encode2 dupd scrypt-bytes dup ] dip 1 - [
         [ dupd scrypt-bytes dup ] dip vbitxor
     ] times 2nip ;
+
+:: timed-enscrypt ( password salt msec -- 32-bytes iterations )
+    msec 1000000 * nano-count + 1 :> ( target-time iterations! )
+    password salt ?encode2 dupd scrypt-bytes dup
+    [ nano-count target-time < ] [
+        [ dupd scrypt-bytes dup ] dip vbitxor
+        iterations 1 + iterations!
+    ] while 2nip iterations ;
