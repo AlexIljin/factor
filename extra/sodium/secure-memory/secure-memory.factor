@@ -1,8 +1,11 @@
 ! Copyright (C) 2020 Alexander Ilin.
 ! See http://factorcode.org/license.txt for BSD license.
 USING:
-    accessors alien combinators.short-circuit continuations destructors kernel
+    accessors
+    alien alien.accessors
+    combinators.short-circuit continuations destructors kernel
     libc
+    sequences sequences.private
     sodium sodium.ffi
 ;
 
@@ -49,3 +52,9 @@ M: secure-memory clone ( obj -- cloned )
     check-disposed [
         size>> new-secure-memory dup underlying>>
     ] [ underlying>> ] [ size>> ] tri memcpy ;
+
+M: secure-memory length size>> ;
+
+M: secure-memory nth-unsafe underlying>> swap alien-unsigned-1 ;
+
+M: secure-memory set-nth-unsafe underlying>> swap set-alien-unsigned-1 ;
