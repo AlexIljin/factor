@@ -1,12 +1,12 @@
 ! Copyright (C) 2020 Alexander Ilin.
 ! See http://factorcode.org/license.txt for BSD license.
 USING:
-    byte-arrays
+    byte-arrays destructors
     io.encodings.string io.encodings.utf8
-    kernel locals
+    kernel libc locals
     math math.vectors
-    sequences
-    sodium sodium.ffi
+    sequences sequences.extras
+    sodium sodium.ffi sodium.secure-memory
     strings system
 ;
 
@@ -27,10 +27,26 @@ CONSTANT: N 512
 : ?encode2 ( str1 str2 -- bytes1 bytes2 )
     [ dup string? [ utf8 encode ] when ] bi@ ;
 
+: vbitxor! ( seq1 seq2 -- seq1' )
+    [ bitxor ] 2map! ; inline
+
+! Perform n iterations of the Scrypt hashing. Initial value of hash-memory
+! contains salt for the first iteration. Intermediate hash values are stored in
+! a temporary secure-memory.
+: (enscrypt-to) ( n+1 password-bytes hash-memory -- hash-memory' )
+    [
+        32 [| n pass hash mem |
+            mem &dispose hash 32 memcpy
+            hash n 1 - [ pass mem mem scrypt-bytes-to vbitxor! ] times
+        ] with-new-secure-memory
+    ] with-destructors ; inline
+
+: enscrypt-to ( iterations password salt hash-memory -- hash-memory' )
+    [ ?encode2 dupd ] dip scrypt-bytes-to
+    pick 1 > [ (enscrypt-to) ] [ 2nip ] if ;
+
 : enscrypt ( iterations password salt -- 32-bytes )
-    ?encode2 dupd scrypt-bytes dup roll 1 - [
-        [ dupd scrypt-bytes dup ] dip vbitxor
-    ] times 2nip ;
+    32 <byte-array> enscrypt-to ;
 
 :: timed-enscrypt ( password salt msec -- 32-bytes iterations )
     msec 1000000 * nano-count + 1 :> ( target-time iterations! )
