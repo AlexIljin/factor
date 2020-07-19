@@ -48,10 +48,26 @@ CONSTANT: N 512
 : enscrypt ( iterations password salt -- 32-bytes )
     32 <byte-array> enscrypt-to ;
 
-:: timed-enscrypt ( password salt msec -- 32-bytes iterations )
-    msec 1000000 * nano-count + 1 :> ( target-time iterations! )
-    password salt ?encode2 dupd scrypt-bytes dup
-    [ nano-count target-time < ] [
-        [ dupd scrypt-bytes dup ] dip vbitxor
-        iterations 1 + iterations!
-    ] while 2nip iterations ;
+! Perform a number of iterations of the Scrypt hashing until the target-time is
+! reached, return the resulting hash-memory and the number of iterations
+! performed. Initial value of the hash-memory contains salt for the first
+! iteration. Intermediate hash values are stored in a temporary secure-memory.
+:: (timed-enscrypt-to) ( password-bytes hash-memory target-time
+-- hash-memory' iterations )
+    [
+        0 32 [| iterations! mem |
+            mem &dispose hash-memory 32 memcpy
+            hash-memory [ nano-count target-time < ] [
+                password-bytes mem mem scrypt-bytes-to vbitxor!
+                iterations 1 + iterations!
+            ] while iterations
+        ] with-new-secure-memory
+    ] with-destructors ; inline
+
+: timed-enscrypt-to ( password salt msec hash-memory -- hash-memory' iterations )
+    ! Calculate target-time before making the first scrypt iteration.
+    swap 1000000 * nano-count +
+    [ [ ?encode2 dupd ] dip scrypt-bytes-to ] dip (timed-enscrypt-to) 1 + ;
+
+: timed-enscrypt ( password salt msec -- 32-bytes iterations )
+    32 <byte-array> timed-enscrypt-to ;
