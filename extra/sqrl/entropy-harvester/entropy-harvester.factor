@@ -13,11 +13,10 @@ IN: sqrl.entropy-harvester
 
 SYMBOL: global-state
 
-: (get-entropy) ( -- 64bytes )
+: (get-entropy) ( 64bytes -- 64bytes' )
     global-state get-global [
         clone [
-            >c-ptr crypto_auth_hmacsha512_BYTES <byte-array>
-            [ crypto_auth_hmacsha512_final check0 ] keep
+            >c-ptr swap [ crypto_auth_hmacsha512_final check0 ] keep
         ] with-disposal
     ] with-read-access ;
 
@@ -48,8 +47,11 @@ PRIVATE>
 : harvest-entropy ( -- )
     random-system-data (harvest-entropy) ;
 
-: get-entropy ( -- 64bytes )
+: get-entropy-to ( 64bytes -- 64bytes' )
     (get-entropy) dup random-system-data append (harvest-entropy) ;
+
+: get-entropy ( -- 64bytes )
+    crypto_auth_hmacsha512_BYTES <byte-array> get-entropy-to ;
 
 <PRIVATE
 
