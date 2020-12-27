@@ -1,1 +1,1 @@
-cmd /k "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+cmd /k "C:\Programs\Dev\VisualStudio\2019\Community\Common7\Tools\VsDevCmd.bat" -arch=amd64
