@@ -38,11 +38,9 @@ if not errorlevel 1 (
 echo Deleting staging images from temp/...
 del temp\staging.*.image
 
-goto :skipBranchUpdate
 echo Updating working copy from %GIT_BRANCH%...
 call git pull https://github.com/factor/factor %GIT_BRANCH%
 if errorlevel 1 goto fail
-:skipBranchUpdate
 
 echo Building vm...
 nmake /nologo /f Nmakefile clean
@@ -51,14 +49,11 @@ if errorlevel 1 goto fail
 nmake /nologo /f Nmakefile %_target%
 if errorlevel 1 goto fail
 
-goto :skipBootstrap
-
 echo Fetching %_bootimage_version% boot image...
 set boot_image_url=http://downloads.factorcode.org/images/%GIT_BRANCH%/%_bootimage% %_bootimage%
 echo URL: %boot_image_url%
 cscript /nologo misc\http-get.vbs %boot_image_url% %_bootimage%
 if errorlevel 1 goto fail
-
 
 echo Bootstrapping...
 .\factor.com -i=%_bootimage%
@@ -67,8 +62,6 @@ if errorlevel 1 goto fail
 echo Copying fresh factor.image to factor.image.fresh.
 copy factor.image factor.image.fresh
 if errorlevel 1 goto fail
-
-:skipBootstrap
 
 echo Build complete.
 goto :EOF
